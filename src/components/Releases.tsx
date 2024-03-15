@@ -47,7 +47,7 @@ const Releases = () => {
             <div key={release.id} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop:"0.5em"}}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="h4" fontWeight="bold" align="left">
-                  <Link href={release.html_url} target="_blank" underline="hover">
+                  <Link href={`/releases/${release.name}`} underline="hover">
                     Release
                   </Link>
                 </Typography>
@@ -62,7 +62,7 @@ const Releases = () => {
           ))}
         </Container>
       )}
-      <Link href={"https://github.com/PelicanPlatform/pelican/releases"} underline='always'>
+      <Link href={"/releases"} underline='always'>
       <Typography 
         variant={"h6"} 
         sx={{

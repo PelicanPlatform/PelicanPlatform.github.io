@@ -33,3 +33,13 @@ export async function getRawFile(organization: string, repo: string, path: strin
 	return await res.text()
 }
 
+
+export interface GitHubReleaseData {
+	tag_name: string;
+	target_commitish: string;
+	body: string;
+  }
+  
+  export interface ReleasePageProps {
+	releaseData: GitHubReleaseData;
+  }

@@ -156,7 +156,7 @@ export const Header = () => {
 					<Link href={"/release-plan"}>
 						<MenuItem onClick={handleClose}>Release Plan</MenuItem>
 					</Link>
-					<Link href={"https://github.com/PelicanPlatform/pelican/releases"} target="_blank">
+					<Link href={"/releases"}>
 						<MenuItem onClick={handleClose}>Releases</MenuItem>
 					</Link>
 				</Menu>

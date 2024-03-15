@@ -87,7 +87,7 @@ export const BurgerMenu = () => {
 
                 <HeaderDropdown name={"Software"} icon = {<Terminal />} >
                     <HeaderLink name={"Release Plan"} href={"/release-plan"} icon={<CalendarMonth />} target="_self" onClick={handleDrawer}/>
-                    <HeaderLink name={"Releases"} href={"https://github.com/PelicanPlatform/pelican/releases"} icon={<FileDownload />} target="_blank" onClick={handleDrawer}/>
+                    <HeaderLink name={"Releases"} href={"/releases"} icon={<FileDownload />} target="_self" onClick={handleDrawer}/>
                 </HeaderDropdown>
 
                 <HeaderMainLink name={"Documentation"} href={"https://docs.pelicanplatform.org/"} icon={<Description />} target="_blank" onClick={handleDrawer}/>
