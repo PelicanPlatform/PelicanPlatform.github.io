@@ -8,17 +8,18 @@ export async function generateStaticParams() {
   const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
   const releasesData = await fetch(allAssetsApiUrl).then(response => response.json());
   const slugs = releasesData.map((release: GitHubReleaseData) => release.tag_name);
-  return slugs.map((slug: string) => ({ slug: slug.split('.') }))
+  return slugs.map((slug: string) => ({ slug: [slug] }));
 }
 
-async function getPageData(slug: string[]) {
+
+async function getPageData(slugArray: string[]) {
+  const slug = slugArray.join(''); // Join the array into a single string
   const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
   const releasesData = await fetch(allAssetsApiUrl).then(response => response.json());
-  const fullSlug = slug.join('.');
-  const [majorVersion, minorVersionBase] = fullSlug.split('.');
+  const [majorVersion, minorVersionBase] = slug.split('.');
   const minorVersion = parseInt(minorVersionBase, 10);
   const newVersionPrefix = `${majorVersion}.${minorVersion}`;
-  const specificRelease = releasesData.find((release: GitHubReleaseData) => release.tag_name === fullSlug);
+  const specificRelease = releasesData.find((release: GitHubReleaseData) => release.tag_name === slug);
   const patchReleases = releasesData.filter((release: GitHubReleaseData) => 
     release.tag_name.startsWith(newVersionPrefix) && 
     !release.tag_name.endsWith('0')
@@ -26,11 +27,14 @@ async function getPageData(slug: string[]) {
   return { specificRelease, patchReleases };
 }
 
+
+
 const Page = async ({ params }: { params: { slug: string[] } }) => {
+  const slugString = params.slug.join('.'); // Join the array into a single string with a dot
   const releaseData = await getPageData(params.slug);
   const { specificRelease, patchReleases } = releaseData;
 
-  if (!releaseData) {
+  if (!specificRelease) {
     return (
       <Container maxWidth="md">
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
@@ -39,8 +43,9 @@ const Page = async ({ params }: { params: { slug: string[] } }) => {
       </Container>
     );
   }
+
   return (
-      <Container maxWidth="md">
+    <Container maxWidth="md">
       <Box pt={6} pb={4}>
         <Typography variant="h2" component="h1">
           {params.slug}
@@ -51,7 +56,7 @@ const Page = async ({ params }: { params: { slug: string[] } }) => {
         }} />
       </Box>
       <MarkdownContainer
-        content={specificRelease?.body || ""}
+        content={specificRelease.body || ""}
       />
       <Box pt={4}>
         <Box pb={4}>
