@@ -29,7 +29,7 @@
     },
     {
       "name": "Justin Hiemstra",
-      "title": "Software Engineer",
+      "title": "Research Software Engineer",
       "institution": "Morgridge Institute for Research",
       "image": "/static/images/staff/justin_hiemstra.jpg"
     },
@@ -41,15 +41,9 @@
     },
     {
       "name": "Emma Turetsky",
-      "title": "Software Engineer",
+      "title": "Research Software Engineer",
       "institution": "Morgridge Institute for Research",
       "image": "/static/images/staff/emma_turetsky.jpg"
-    },
-    {
-      "name": "Joe Reuss",
-      "title": "Software Engineer",
-      "institution": "University of Wisconsin-Madison",
-      "image": "/static/images/staff/joe_ruess.jpg"
     },
     {
       "name": "Alja Mrak Tadel",
