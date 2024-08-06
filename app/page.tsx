@@ -28,7 +28,8 @@ export default async function Home() {
         <Box>
             <Box>
                 { Date.now() < Date.parse("2024-08-01") && (
-                <Container maxWidth={"xl"} sx={{
+                <Container sx={{
+                    width: '100%',
                     backgroundColor:"primary.light",
                     p:1
                     
