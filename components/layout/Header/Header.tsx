@@ -81,6 +81,11 @@ const MENU_ITEMS: (Omit<HeaderMenuProps, "setAnchor" | "anchorEl"> | HeaderLinkI
 				"value": "News",
 				"href": "/news",
 				"icon": <Newspaper />
+			},
+			{
+				"value": "Presentations",
+				"href": "/presentations",
+				"icon": <Grade />
 			}
 		]
 	},

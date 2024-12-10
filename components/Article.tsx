@@ -7,6 +7,7 @@ import Link from "next/link";
 import ArrowRight from "@/components/svg/arrowright";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import {BackendPresentation} from "@/utils/presentations";
 
 interface CardProps {
 	href: string;
