@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build -d",
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next-image-export-optimizer"
   },
   "dependencies": {
+    "@chtc/web-components": "^0.0.0-9",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mdx-js/loader": "^3.0.0",
@@ -25,8 +26,8 @@
     "eslint-config-next": "^14.2.3",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
-    "next": "^14.2.3",
-    "next-image-export-optimizer": "^1.8.1",
+    "next": "^15",
+    "next-image-export-optimizer": "^1.18.0",
     "next-mdx-remote": "^4.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

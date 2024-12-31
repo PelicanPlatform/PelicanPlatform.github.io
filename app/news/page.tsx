@@ -1,5 +1,5 @@
 import {Box, Typography, Grid, Container} from "@mui/material";
-import {HeroCard, ArticleCard} from "../../components/Article";
+import {HorizontalArticleCard, ArticleCard} from "@chtc/web-components";
 import {getArticles, filterArticles} from "../../utils/articles";
 
 
@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
 	return (
 			<>
-				<HeroCard href={`/user-stories/${articles[0].slug.join("/")}`} article={articles[0]}/>
+				<HorizontalArticleCard href={`/user-stories/${articles[0].slug.join("/")}`} article={articles[0]}/>
 				<Box textAlign={"center"} py={5}>
 					<Typography variant={"h2"}>News</Typography>
 				</Box>

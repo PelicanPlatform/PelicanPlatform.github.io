@@ -5,7 +5,7 @@ import {Box, Container, Grid, Typography, Link, Divider, Button} from '@mui/mate
 import hero from '../public/static/images/pelican-hero.png'
 import ArrowRight from "@/components/svg/arrowright";
 import pelicanDiagram from "../public/static/images/pelican-concept-map_Realistic.png"
-import {ArticleCard} from "@/components/Article";
+import {ArticleCard} from "@chtc/web-components";
 import {getArticles, filterArticles, BackendArticle} from "@/utils/articles";
 import Releases from "../components/Releases";
 

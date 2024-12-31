@@ -1,5 +1,5 @@
 import {getArticles, filterArticles, getArticle} from "@/utils/articles";
-import {Article} from "@/components/Article";
+import {Article} from "@chtc/web-components";
 
 export async function generateStaticParams() {
 	const articles = await getArticles("CHTC", "Articles", "main")
@@ -14,6 +14,6 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 	const markdownData = await getMarkdownFile(params.slug)
 
 	return (
-		<Article {...markdownData} />
+		<Article article={markdownData} />
 	)
 }
