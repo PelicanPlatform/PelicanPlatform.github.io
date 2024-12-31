@@ -8,7 +8,7 @@ async function getUserStories(){
 	return filterArticles(articles, "pelican", "user")
 }
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page() {
 	const articles = await getUserStories()
 
 	return (

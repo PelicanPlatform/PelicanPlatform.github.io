@@ -10,7 +10,7 @@ const nextConfig = {
     env: {
         nextImageExportOptimizer_imageFolderPath: "public/static/images",
         nextImageExportOptimizer_exportFolderPath: "out",
-        nextImageExportOptimizer_quality: "100",
+        nextImageExportOptimizer_quality: "75",
         nextImageExportOptimizer_storePicturesInWEBP: "true",
         nextImageExportOptimizer_exportFolderName: "nextImageExportOptimizer",
 

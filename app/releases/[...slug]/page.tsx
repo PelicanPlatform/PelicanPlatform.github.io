@@ -26,8 +26,9 @@ async function getPageData(slug: string[]) {
   return { specificRelease, patchReleases };
 }
 
-const Page = async ({ params }: { params: { slug: string[] } }) => {
-  const releaseData = await getPageData(params.slug);
+const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
+  const slug = (await params).slug;
+  const releaseData = await getPageData(slug);
   const { specificRelease, patchReleases } = releaseData;
 
   if (!releaseData) {
@@ -43,7 +44,7 @@ const Page = async ({ params }: { params: { slug: string[] } }) => {
       <Container maxWidth="md">
       <Box pt={6} pb={4}>
         <Typography variant="h2" component="h1">
-          {params.slug}
+          {slug}
         </Typography>
         <Divider sx={{
           bgcolor: "primary.main",

@@ -98,8 +98,9 @@ async function getPresentationBySlug(slug: string[]): Promise<PresentationProps 
 }
 
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
-    const presentation = await getPresentationBySlug(params.slug);
+export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
+    const slug = (await params).slug;
+    const presentation = await getPresentationBySlug(slug);
 
 
     if (!presentation) {
