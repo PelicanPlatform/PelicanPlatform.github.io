@@ -150,7 +150,11 @@ export default async function Home() {
                                     <ArticleCard
                                         key={userStories[userStories.length - 1].slug.join("-")}
                                         href={`/user-stories/${userStories[userStories.length - 1].slug.join("/")}`}
-                                        article={userStories[userStories.length - 1]}
+                                        article={{
+                                            image: userStories[userStories.length - 1].image,
+                                            title: userStories[userStories.length - 1].title,
+                                            excerpt: userStories[userStories.length - 1].excerpt
+                                        }}
                                     />
                                 </Grid>
                             )}
@@ -161,7 +165,14 @@ export default async function Home() {
                             </Typography>
                             {news.length > 0 && (
                                 <Grid key={news[news.length - 1].slug.join("-")} sx={{backgroundColor: "#FFFFFF"}}>
-                                    <ArticleCard href={`/news/${news[news.length - 1].slug.join("/")}`} article={news[news.length - 1]}/>
+                                    <ArticleCard
+                                        href={`/news/${news[news.length - 1].slug.join("/")}`}
+                                        article={{
+                                            image: news[news.length - 1].image,
+                                            title: news[news.length - 1].title,
+                                            excerpt: news[news.length - 1].excerpt
+                                        }}
+                                    />
                                 </Grid>
                             )}
                         </Grid>
