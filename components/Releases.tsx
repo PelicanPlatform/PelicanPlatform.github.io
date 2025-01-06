@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+
 import { Container, Link, Typography, Box } from '@mui/material';
 import ArrowRight from '@/components/svg/arrowright';
 
