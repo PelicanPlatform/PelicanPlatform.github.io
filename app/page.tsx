@@ -186,7 +186,7 @@ export default async function Home() {
                                 src={"https://www.youtube.com/embed/ySYdZ2HAyB8?si=z72HZryDHhE2H3n8"}
                                 title={"Data in Flight - Delivering Data with Pelican"}
                                 description={`
-                            Andrew Owen explains how to use Pelican to connect your data to existing data federations, 
+                            Researcher Facilitator, Andrew Owen, explains how to use Pelican to connect your data to existing data federations, 
                             including the OSDF. He then provides steps on how to deploy an origin on top of your 
                             data repository.
                             `}
