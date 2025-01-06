@@ -18,7 +18,7 @@ const nextConfig = {
         // nextImageExportOptimizer_generateAndUseBlurImages to false and pass
         // `placeholder="empty"` to all <ExportedImage> components.
         nextImageExportOptimizer_generateAndUseBlurImages: "true",
-    },
+    }
 }
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

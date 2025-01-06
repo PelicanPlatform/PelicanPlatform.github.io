@@ -28,12 +28,17 @@ const Footer = () => {
                     </Grid>
                 </Container>
             </Box>
-            <Box sx={{backgroundColor:"#F5F5F5"}} py={1}>
+            <Box sx={{backgroundColor:"#F5F5F5"}} pt={3}>
                 <Container maxWidth={"xl"}>
-                    <Grid container justifyContent={"center"}>
+                    <Grid container justifyContent={"center"} spacing={2}>
                         <Grid item>
                             <Typography>
                                 <Link href={"./branding"}>Branding</Link>
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography>
+                                <Link href={"./contact"}>Contact Us</Link>
                             </Typography>
                         </Grid>
                     </Grid>
