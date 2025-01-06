@@ -8,6 +8,7 @@ import pelicanDiagram from "../public/static/images/pelican-concept-map_Realisti
 import {ArticleCard} from "@chtc/web-components";
 import {getArticles, filterArticles, BackendArticle} from "@/utils/articles";
 import Releases from "../components/Releases";
+import VideoCard from "@/components/VideoCard";
 
 async function getUserStories(){
 	const articles = await getArticles("CHTC", "Articles", "main")
@@ -137,50 +138,66 @@ export default async function Home() {
                         </Grid>
                     </Grid>
                 </Container>
-
                 <Container maxWidth={"xl"}>
-                <Divider sx={{margin: 6}}/>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: { xs: "none", lg: "block" } }}>
-                            <Typography variant={"h4"} sx={{paddingBottom: "1.5rem", textAlign:"center"}}>
-                                <Link href={"/user-stories"} underline="hover" color="inherit">User Stories</Link>
-                            </Typography> 
-                            {userStories.length > 0 && (
-                                <Grid key={userStories[userStories.length - 1].slug.join("-")} sx={{backgroundColor: "#FFFFFF"}}>
-                                    <ArticleCard
-                                        key={userStories[userStories.length - 1].slug.join("-")}
-                                        href={`/user-stories/${userStories[userStories.length - 1].slug.join("/")}`}
-                                        article={{
-                                            image: userStories[userStories.length - 1].image,
-                                            title: userStories[userStories.length - 1].title,
-                                            excerpt: userStories[userStories.length - 1].excerpt
-                                        }}
-                                    />
-                                </Grid>
-                            )}
+                    <Box mt={6}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{ display: { xs: "none", lg: "block" } }}>
+                                <Typography variant={"h4"} sx={{paddingBottom: "1.5rem", textAlign:"center"}}>
+                                    <Link href={"/user-stories"} underline="hover" color="inherit">User Stories</Link>
+                                </Typography>
+                                {userStories.length > 0 && (
+                                    <Grid key={userStories[userStories.length - 1].slug.join("-")} sx={{backgroundColor: "#FFFFFF"}}>
+                                        <ArticleCard
+                                            key={userStories[userStories.length - 1].slug.join("-")}
+                                            href={`/user-stories/${userStories[userStories.length - 1].slug.join("/")}`}
+                                            article={{
+                                                image: userStories[userStories.length - 1].image,
+                                                title: userStories[userStories.length - 1].title,
+                                                excerpt: userStories[userStories.length - 1].excerpt
+                                            }}
+                                        />
+                                    </Grid>
+                                )}
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{order: { xs: 2, sm: 1 }}}>
+                                <Typography variant={"h4"} sx={{paddingBottom: "1.5rem", marginTop: {xs:"1.5rem", sm:"0", textAlign:"center"}}}>
+                                    <Link href={"/news"} underline="hover" color="inherit">News</Link>
+                                </Typography>
+                                {news.length > 0 && (
+                                    <Grid key={news[news.length - 1].slug.join("-")} sx={{backgroundColor: "#FFFFFF"}}>
+                                        <ArticleCard
+                                            href={`/news/${news[news.length - 1].slug.join("/")}`}
+                                            article={{
+                                                image: news[news.length - 1].image,
+                                                title: news[news.length - 1].title,
+                                                excerpt: news[news.length - 1].excerpt
+                                            }}
+                                        />
+                                    </Grid>
+                                )}
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{order: { xs: 1, sm: 2 }}}>
+                                <Typography variant={"h4"} sx={{paddingBottom: "1.5rem", textAlign:"center"}}>Latest Releases</Typography>
+                                <Releases/>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{order: { xs: 2, sm: 1 }}}>
-                            <Typography variant={"h4"} sx={{paddingBottom: "1.5rem", marginTop: {xs:"1.5rem", sm:"0", textAlign:"center"}}}>
-                                <Link href={"/news"} underline="hover" color="inherit">News</Link>
-                            </Typography>
-                            {news.length > 0 && (
-                                <Grid key={news[news.length - 1].slug.join("-")} sx={{backgroundColor: "#FFFFFF"}}>
-                                    <ArticleCard
-                                        href={`/news/${news[news.length - 1].slug.join("/")}`}
-                                        article={{
-                                            image: news[news.length - 1].image,
-                                            title: news[news.length - 1].title,
-                                            excerpt: news[news.length - 1].excerpt
-                                        }}
-                                    />
-                                </Grid>
-                            )}
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={6} lg={4} xl={4} sx={{order: { xs: 1, sm: 2 }}}>
-                            <Typography variant={"h4"} sx={{paddingBottom: "1.5rem", textAlign:"center"}}>Latest Releases</Typography>
-                            <Releases/>
-                        </Grid>
-                    </Grid>
+                        <Box sx={{mt:6}}>
+                            <VideoCard
+                                src={"https://www.youtube.com/embed/ySYdZ2HAyB8?si=z72HZryDHhE2H3n8"}
+                                title={"Data in Flight - Delivering Data with Pelican"}
+                                description={`
+                            Andrew Owen explains how to use Pelican to connect your data to existing data federations, 
+                            including the OSDF. He then provides steps on how to deploy an origin on top of your 
+                            data repository.
+                            `}
+                                author={"Andrew Owen"}
+                                button={{
+                                    href: "https://agenda.hep.wisc.edu/event/2175/contributions/31337/",
+                                    text: "View Tutorial Materials"
+                                }}
+                            />
+                        </Box>
+                    </Box>
                 </Container>
             </Box>
         </Box>
