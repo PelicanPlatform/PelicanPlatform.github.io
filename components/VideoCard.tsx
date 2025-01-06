@@ -21,7 +21,7 @@ const VideoCard = ({src, description, title, author, button} : VideoCardProps) =
 
 	return (
 		<Grid container>
-			<Grid item xs={7}>
+			<Grid item xs={12} md={7}>
 				<iframe
 						style={{
 							width: "100%",
@@ -35,7 +35,7 @@ const VideoCard = ({src, description, title, author, button} : VideoCardProps) =
 						allowFullScreen
 				/>
 			</Grid>
-			<Grid item xs={5} display={"flex"}>
+			<Grid item xs={12} md={5} display={"flex"}>
 				<Box sx={{m: 2, mt: 5, display: "flex", flexDirection: "column"}}>
 					<Box>
 						<TopStyledBlock>
