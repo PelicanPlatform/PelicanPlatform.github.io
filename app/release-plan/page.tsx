@@ -79,7 +79,10 @@ async function getCurrentMilestone(): Promise<GithubMilestoneData> {
     const response = await fetch(apiUrl);
     if (!response.ok) throw new Error("Failed to fetch milestones");
 
-    const milestones: GithubMilestoneData[] = await response.json();
+    let milestones: GithubMilestoneData[] = await response.json();
+
+    // If the title is 'parking-lot' then skip it
+    milestones = milestones.filter((milestone) => milestone.title !== "parking-lot");
 
     // simple type sanity checks, not exhaustive
     if (!Array.isArray(milestones)) throw new Error("Invalid milestone data");
