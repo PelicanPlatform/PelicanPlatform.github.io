@@ -5,14 +5,14 @@ name: Deploy Next.js site to Pages
 on:
   # Run every night
   schedule:
-      - cron: "0 * * * *"
+    - cron: '0 * * * *'
 
   pull_request:
-    branches: ["main"]
+    branches: ['main']
 
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches: ['main']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -26,7 +26,7 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
@@ -59,7 +59,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: "22"
+          node-version: '22'
       - name: Setup Pages
         uses: actions/configure-pages@v3
         with:

@@ -7,7 +7,7 @@
   min-height: 100vh;
   margin-top: 68px;
   box-shadow: 0px 6px 7px #e2e2e2;
-  padding-bottom:3rem
+  padding-bottom: 3rem;
 }
 
 .description {
@@ -54,7 +54,9 @@
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition: background 200ms, border 200ms;
+  transition:
+    background 200ms,
+    border 200ms;
 }
 
 .card span {
@@ -76,30 +78,41 @@
 }
 
 .header::before {
-  background: conic-gradient( from 180deg at 80% 80%, #16abff 0deg, #0885ff 55deg, #54d6ff 120deg, #0071ff 160deg, #0071ff 360deg );
+  background: conic-gradient(
+    from 180deg at 80% 80%,
+    #16abff 0deg,
+    #0885ff 55deg,
+    #54d6ff 120deg,
+    #0071ff 160deg,
+    #0071ff 360deg
+  );
   opacity: 20%;
-  transition: opacity .5s ease-out;
+  transition: opacity 0.5s ease-out;
   z-index: -1;
   filter: blur(20px);
-  content: "";
+  content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 120%; height: 120%;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 120%;
   margin-left: -5%;
   margin-top: -1%;
 }
 
 .header::after {
   z-index: -2;
-  content: "";
+  content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 120%; height: 120%;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 120%;
   margin-left: -5%;
   margin-top: -1%;
   background-color: white;
-  transition: opacity .5s ease-out;
-  opacity: 98%
+  transition: opacity 0.5s ease-out;
+  opacity: 98%;
 }
 
 .headerScrolled::after {
@@ -255,4 +268,3 @@
     transform: rotate(0deg);
   }
 }
-
