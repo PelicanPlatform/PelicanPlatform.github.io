@@ -29,40 +29,45 @@ const Page = async () => {
           }}
         />
       </Box>
-      {Object.keys(organizedReleases).map((mainRelease, index) => {
-        return (
-          <Box key={index} pb={4}>
-            <Typography variant='h3' component='h2'>
-              {mainRelease[0].toUpperCase() + mainRelease.slice(1)}
-            </Typography>
-            {organizedReleases[mainRelease].mainRelease.body !== '' ? (
-              <Box pb={4}>
-                <MarkdownContainer
-                  content={organizedReleases[mainRelease].mainRelease.body}
-                />
-              </Box>
-            ) : null}
-            {organizedReleases[mainRelease].minorReleases.map(
-              (release: GitHubReleaseData) => (
-                <Accordion key={release.tag_name}>
-                  <AccordionSummary
-                    expandIcon={<ArrowDropDownIcon />}
-                    aria-controls={`${release.tag_name}-content`}
-                    id={`${release.tag_name}-header`}
-                  >
-                    <Typography variant='h5' component='h2'>
-                      {release.tag_name}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <MarkdownContainer content={release.body} />
-                  </AccordionDetails>
-                </Accordion>
-              )
-            )}
-          </Box>
-        );
-      })}
+      {Object.entries(organizedReleases).map(
+        ([mainReleaseName, mainReleaseData], index) => {
+          return (
+            <Box key={index} pb={4}>
+              <Typography variant='h3' component='h2'>
+                {mainReleaseName[0].toUpperCase() + mainReleaseName.slice(1)}
+              </Typography>
+
+              {mainReleaseData.mainRelease &&
+              mainReleaseData.mainRelease.body !== '' ? (
+                <Box pb={4}>
+                  <MarkdownContainer
+                    content={mainReleaseData.mainRelease.body}
+                  />
+                </Box>
+              ) : null}
+
+              {organizedReleases[mainReleaseName].minorReleases.map(
+                (release: GitHubReleaseData) => (
+                  <Accordion key={release.tag_name}>
+                    <AccordionSummary
+                      expandIcon={<ArrowDropDownIcon />}
+                      aria-controls={`${release.tag_name}-content`}
+                      id={`${release.tag_name}-header`}
+                    >
+                      <Typography variant='h5' component='h2'>
+                        {release.tag_name}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <MarkdownContainer content={release.body} />
+                    </AccordionDetails>
+                  </Accordion>
+                )
+              )}
+            </Box>
+          );
+        }
+      )}
     </Container>
   );
 };
