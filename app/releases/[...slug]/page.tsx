@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import React from 'react';
-import MarkdownContainer from '@/components/MarkdownContainer';
+import { ReleaseBody } from '../page';
 import { GitHubReleaseData } from '../../../utils/github';
 import { fetchAllReleases } from '@/utils/releases';
 
@@ -102,7 +102,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
           }}
         />
       </Box>
-      <MarkdownContainer content={specificRelease?.body || ''} />
+      <ReleaseBody content={specificRelease?.body || ''} />
       <Box pt={4}>
         <Box pb={4}>
           {patchReleases.map((release: GitHubReleaseData) => (
@@ -117,7 +117,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ mx: 3 }}>
-                <MarkdownContainer content={release.body} />
+                <ReleaseBody content={release.body} />
               </AccordionDetails>
             </Accordion>
           ))}
