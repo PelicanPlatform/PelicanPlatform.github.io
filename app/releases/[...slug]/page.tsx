@@ -7,6 +7,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Link,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import React from 'react';
@@ -24,7 +25,10 @@ export async function generateStaticParams() {
   return slugs.map((slug: string) => ({ slug: [slug] }));
 }
 
-async function getPageData(slug: string[]) {
+async function getPageData(slug: string[]): Promise<{
+  specificRelease?: GitHubReleaseData;
+  patchReleases: GitHubReleaseData[];
+}> {
   const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
   const releasesData = await fetch(allAssetsApiUrl).then((response) =>
     response.json()
@@ -42,6 +46,10 @@ async function getPageData(slug: string[]) {
       !release.tag_name.endsWith('0')
   );
   return { specificRelease, patchReleases };
+}
+
+function getDownloadLink(release: GitHubReleaseData) {
+  return `https://docs.pelicanplatform.org/install?version=${release.name}#determine-which-executable-to-download`;
 }
 
 const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
@@ -68,9 +76,23 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
   return (
     <Container maxWidth='md'>
       <Box pt={6} pb={4}>
-        <Typography variant='h2' component='h1'>
-          {slug}
-        </Typography>
+        <Box
+          display='flex'
+          justifyContent='space-between'
+          alignItems='flex-end'
+        >
+          <Typography variant='h2' component='h1'>
+            {slug}
+          </Typography>
+          <Typography variant='h4' component='h2'>
+            <Link
+              href={getDownloadLink(specificRelease ?? patchReleases[0])}
+              target='_blank'
+            >
+              Download
+            </Link>
+          </Typography>
+        </Box>
         <Divider
           sx={{
             bgcolor: 'primary.main',
