@@ -17,7 +17,7 @@ const ReleaseBody = ({ content }: { content: string }) => {
       }
     }
   );
-  console.log(formatted);
+
   return <MarkdownContainer content={formatted} />;
 };
 
