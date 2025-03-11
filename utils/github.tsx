@@ -52,6 +52,7 @@ export interface GitHubReleaseData {
   name: string;
   published_at: string;
   html_url: string;
+  prerelease: boolean;
 }
 
 export interface ReleasePageProps {

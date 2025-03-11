@@ -14,6 +14,11 @@ import React from 'react';
 import MarkdownContainer from '@/components/MarkdownContainer';
 import { GitHubReleaseData } from '../../../utils/github';
 
+interface ReleaseData {
+  specificRelease?: GitHubReleaseData;
+  patchReleases: GitHubReleaseData[];
+}
+
 export async function generateStaticParams() {
   const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
   const releasesData = await fetch(allAssetsApiUrl).then((response) =>
@@ -25,10 +30,7 @@ export async function generateStaticParams() {
   return slugs.map((slug: string) => ({ slug: [slug] }));
 }
 
-async function getPageData(slug: string[]): Promise<{
-  specificRelease?: GitHubReleaseData;
-  patchReleases: GitHubReleaseData[];
-}> {
+async function getPageData(slug: string[]): Promise<ReleaseData> {
   const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
   const releasesData = await fetch(allAssetsApiUrl).then((response) =>
     response.json()
@@ -48,8 +50,17 @@ async function getPageData(slug: string[]): Promise<{
   return { specificRelease, patchReleases };
 }
 
-function getDownloadLink(release: GitHubReleaseData) {
-  return `https://docs.pelicanplatform.org/install?version=${release.name}#determine-which-executable-to-download`;
+function getDownloadLink(releaseData: ReleaseData) {
+  // Prevent the download link from being a release candidate
+  const latestPatches = releaseData.patchReleases.filter(
+    (release) => !release.prerelease
+  );
+
+  if (latestPatches.length === 0) {
+    return `https://docs.pelicanplatform.org/install#determine-which-executable-to-download`;
+  } else {
+    return `https://docs.pelicanplatform.org/install?version=${latestPatches[0]?.name ?? ''}#determine-which-executable-to-download`;
+  }
 }
 
 const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
@@ -85,10 +96,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
             {slug}
           </Typography>
           <Typography variant='h4' component='h2'>
-            <Link
-              href={getDownloadLink(specificRelease ?? patchReleases[0])}
-              target='_blank'
-            >
+            <Link href={getDownloadLink(releaseData)} target='_blank'>
               Download
             </Link>
           </Typography>
