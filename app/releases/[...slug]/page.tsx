@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import React from 'react';
-import { ReleaseBody } from '../page';
+import ReleaseBody from '../ReleaseBody';
 import { GitHubReleaseData } from '../../../utils/github';
 import { fetchAllReleases } from '@/utils/releases';
 
