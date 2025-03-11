@@ -1,7 +1,7 @@
 import { Container, Link, Typography, Box } from '@mui/material';
 import ArrowRight from '@/components/svg/arrowright';
 import { fetchAllReleases } from '@/utils/releases';
-import semver from 'semver';
+import semverRCompare from 'semver/functions/rcompare';
 
 const Releases = async () => {
   const releases = await fetchAllReleases();
@@ -33,10 +33,10 @@ const Releases = async () => {
             releases
               .filter((release) => !release.prerelease)
               .sort((a, b) => {
-                return semver.rcompare(a.name, b.name);
+                return semverRCompare(a.name, b.name);
               })
               .slice(0, 4)
-              .map((release) => (
+              .map((release, i) => (
                 <div
                   key={release.id}
                   style={{
@@ -47,7 +47,11 @@ const Releases = async () => {
                   }}
                 >
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant='h4' fontWeight='bold' align='left'>
+                    <Typography
+                      variant={i === 0 ? 'h3' : 'h5'}
+                      fontWeight='bold'
+                      align='left'
+                    >
                       <Link
                         href={`/releases/${release.name}`}
                         underline='hover'
@@ -60,7 +64,7 @@ const Releases = async () => {
                     </Typography>
                   </div>
                   <Typography
-                    variant='h3'
+                    variant={i === 0 ? 'h3' : 'h4'}
                     fontWeight='bold'
                     align='right'
                     color={'#3A3B3C'}
