@@ -13,6 +13,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import React from 'react';
 import MarkdownContainer from '@/components/MarkdownContainer';
 import { GitHubReleaseData } from '../../../utils/github';
+import { fetchAllReleases } from '@/utils/releases';
 
 interface ReleaseData {
   specificRelease?: GitHubReleaseData;
@@ -20,21 +21,14 @@ interface ReleaseData {
 }
 
 export async function generateStaticParams() {
-  const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
-  const releasesData = await fetch(allAssetsApiUrl).then((response) =>
-    response.json()
-  );
-  const slugs = releasesData.map(
-    (release: GitHubReleaseData) => release.tag_name
-  );
+  const releases = await fetchAllReleases(false);
+  const slugs = releases.map((release: GitHubReleaseData) => release.tag_name);
   return slugs.map((slug: string) => ({ slug: [slug] }));
 }
 
 async function getPageData(slug: string[]): Promise<ReleaseData> {
-  const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
-  const releasesData = await fetch(allAssetsApiUrl).then((response) =>
-    response.json()
-  );
+  const releasesData = await fetchAllReleases(false);
+
   const fullSlug = slug.join('.');
   const [majorVersion, minorVersionBase] = fullSlug.split('.');
   const minorVersion = parseInt(minorVersionBase, 10);
