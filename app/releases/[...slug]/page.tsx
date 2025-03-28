@@ -7,28 +7,28 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Link,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import React from 'react';
-import MarkdownContainer from '@/components/MarkdownContainer';
+import ReleaseBody from '../ReleaseBody';
 import { GitHubReleaseData } from '../../../utils/github';
+import { fetchAllReleases } from '@/utils/releases';
+
+interface ReleaseData {
+  specificRelease?: GitHubReleaseData;
+  patchReleases: GitHubReleaseData[];
+}
 
 export async function generateStaticParams() {
-  const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
-  const releasesData = await fetch(allAssetsApiUrl).then((response) =>
-    response.json()
-  );
-  const slugs = releasesData.map(
-    (release: GitHubReleaseData) => release.tag_name
-  );
+  const releases = await fetchAllReleases(false);
+  const slugs = releases.map((release: GitHubReleaseData) => release.tag_name);
   return slugs.map((slug: string) => ({ slug: [slug] }));
 }
 
-async function getPageData(slug: string[]) {
-  const allAssetsApiUrl = `https://api.github.com/repos/PelicanPlatform/pelican/releases`;
-  const releasesData = await fetch(allAssetsApiUrl).then((response) =>
-    response.json()
-  );
+async function getPageData(slug: string[]): Promise<ReleaseData> {
+  const releasesData = await fetchAllReleases(false);
+
   const fullSlug = slug.join('.');
   const [majorVersion, minorVersionBase] = fullSlug.split('.');
   const minorVersion = parseInt(minorVersionBase, 10);
@@ -42,6 +42,19 @@ async function getPageData(slug: string[]) {
       !release.tag_name.endsWith('0')
   );
   return { specificRelease, patchReleases };
+}
+
+function getDownloadLink(releaseData: ReleaseData) {
+  // Prevent the download link from being a release candidate
+  const latestPatches = releaseData.patchReleases.filter(
+    (release) => !release.prerelease
+  );
+
+  if (latestPatches.length === 0) {
+    return `https://docs.pelicanplatform.org/install#determine-which-executable-to-download`;
+  } else {
+    return `https://docs.pelicanplatform.org/install?version=${latestPatches[0]?.name ?? ''}#determine-which-executable-to-download`;
+  }
 }
 
 const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
@@ -68,9 +81,20 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
   return (
     <Container maxWidth='md'>
       <Box pt={6} pb={4}>
-        <Typography variant='h2' component='h1'>
-          {slug}
-        </Typography>
+        <Box
+          display='flex'
+          justifyContent='space-between'
+          alignItems='flex-end'
+        >
+          <Typography variant='h2' component='h1'>
+            {slug}
+          </Typography>
+          <Typography variant='h4' component='h2'>
+            <Link href={getDownloadLink(releaseData)} target='_blank'>
+              Download
+            </Link>
+          </Typography>
+        </Box>
         <Divider
           sx={{
             bgcolor: 'primary.main',
@@ -78,7 +102,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
           }}
         />
       </Box>
-      <MarkdownContainer content={specificRelease?.body || ''} />
+      <ReleaseBody content={specificRelease?.body || ''} />
       <Box pt={4}>
         <Box pb={4}>
           {patchReleases.map((release: GitHubReleaseData) => (
@@ -93,7 +117,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ mx: 3 }}>
-                <MarkdownContainer content={release.body} />
+                <ReleaseBody content={release.body} />
               </AccordionDetails>
             </Accordion>
           ))}

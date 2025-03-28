@@ -11,7 +11,7 @@ import {
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { GitHubReleaseData } from '@/utils/github';
 import { organizeReleases } from '@/utils/releases';
-import MarkdownContainer from '@/components/MarkdownContainer';
+import ReleaseBody from './ReleaseBody';
 
 const Page = async () => {
   const organizedReleases = await organizeReleases();
@@ -40,9 +40,7 @@ const Page = async () => {
               {mainReleaseData.mainRelease &&
               mainReleaseData.mainRelease.body !== '' ? (
                 <Box pb={4}>
-                  <MarkdownContainer
-                    content={mainReleaseData.mainRelease.body}
-                  />
+                  <ReleaseBody content={mainReleaseData.mainRelease.body} />
                 </Box>
               ) : null}
 
@@ -59,7 +57,7 @@ const Page = async () => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <MarkdownContainer content={release.body} />
+                      <ReleaseBody content={release.body} />
                     </AccordionDetails>
                   </Accordion>
                 )

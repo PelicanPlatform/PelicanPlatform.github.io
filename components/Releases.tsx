@@ -1,6 +1,7 @@
 import { Container, Link, Typography, Box } from '@mui/material';
 import ArrowRight from '@/components/svg/arrowright';
 import { fetchAllReleases } from '@/utils/releases';
+import semverRCompare from 'semver/functions/rcompare';
 
 const Releases = async () => {
   const releases = await fetchAllReleases();
@@ -26,36 +27,53 @@ const Releases = async () => {
     <Box borderRadius={2} overflow={'hidden'} sx={style}>
       {Array.isArray(releases) && (
         <Container style={{ display: 'flex', flexDirection: 'column' }}>
-          {releases.slice(0, 4).map((release) => (
-            <div
-              key={release.id}
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: '0.5em',
-              }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Typography variant='h4' fontWeight='bold' align='left'>
-                  <Link href={`/releases/${release.name}`} underline='hover'>
-                    Release
-                  </Link>
-                </Typography>
-                <Typography variant='body1' align='left' color='gray'>
-                  {formatDate(release.published_at)}
-                </Typography>
-              </div>
-              <Typography
-                variant='h3'
-                fontWeight='bold'
-                align='right'
-                color={'#3A3B3C'}
-              >
-                {release.name}
-              </Typography>
-            </div>
-          ))}
+          {
+            // Show the latest 4 releases that are not pre-releases
+            // Release candidates are already filtered by fetchAllReleases()
+            releases
+              .filter((release) => !release.prerelease)
+              .sort((a, b) => {
+                return semverRCompare(a.name, b.name);
+              })
+              .slice(0, 4)
+              .map((release, i) => (
+                <div
+                  key={release.id}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: '0.5em',
+                  }}
+                >
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography
+                      variant={i === 0 ? 'h3' : 'h5'}
+                      fontWeight='bold'
+                      align='left'
+                    >
+                      <Link
+                        href={`/releases/${release.name}`}
+                        underline='hover'
+                      >
+                        Release
+                      </Link>
+                    </Typography>
+                    <Typography variant='body1' align='left' color='gray'>
+                      {formatDate(release.published_at)}
+                    </Typography>
+                  </div>
+                  <Typography
+                    variant={i === 0 ? 'h3' : 'h4'}
+                    fontWeight='bold'
+                    align='right'
+                    color={'#3A3B3C'}
+                  >
+                    {release.name}
+                  </Typography>
+                </div>
+              ))
+          }
         </Container>
       )}
       <Link href={'/releases'} underline='always'>

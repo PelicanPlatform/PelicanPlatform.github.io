@@ -1,4 +1,4 @@
-import { GitHubReleaseData } from './github';
+import {getAll, GitHubReleaseData} from './github';
 
 export type OrganizedReleasesType = {
   [key: string]: {
@@ -8,15 +8,21 @@ export type OrganizedReleasesType = {
 };
 
 // This function fetches all releases from the GitHub API
-export async function fetchAllReleases() {
+export async function fetchAllReleases(
+  excludeReleaseCandidates: boolean = true
+): Promise<GitHubReleaseData[]> {
   const apiUrl =
     'https://api.github.com/repos/PelicanPlatform/pelican/releases';
-  const response = await fetch(apiUrl);
-  const releases: GitHubReleaseData[] = await response.json();
-  const filteredReleases = releases.filter((release) =>
-    !release.tag_name.match(/^.*rc.*$/)
-  );
-  return filteredReleases;
+
+  let releases = await getAll(apiUrl)
+
+  if (excludeReleaseCandidates) {
+    releases = releases.filter(
+      (release) => !release.tag_name.match(/^.*rc.*$/)
+    );
+  }
+
+  return releases;
 }
 
 // Organize releases into main and minor releases
