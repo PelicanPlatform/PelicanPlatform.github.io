@@ -44,6 +44,45 @@ export async function getRawFile(
   return await res.text();
 }
 
+/**
+ * Provided a Github URL will paginate all the results available and return a single array
+ */
+export const getAll = async (apiUrl:string) => {
+  // This function will fetch all pages of a Github API endpoint
+  const results: any[] = [];
+  let page = 1;
+  let perPage = 100; // Default to 100 items per page
+  let url = `${apiUrl}?per_page=${perPage}&page=${page}`;
+
+  while (true) {
+
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch: ${res.statusText}`);
+    }
+    const data = await res.json();
+    results.push(...data);
+
+    // Check if there is a next page of results
+    const linkHeader = res.headers.get('link');
+    const nextLinkHeaderValue = linkHeader?.split(',').find((link: string) => link.endsWith('"next"'))
+
+
+    // Check if the link header exists and contains a link to the next page
+    if (!res.headers.get('link') || nextLinkHeaderValue == undefined) {
+      // No more pages
+      break;
+    }
+
+    // Parse the next url from the header which is in form
+    // `<https://api.github.com/repositories/652665253/releases?page=2>; rel="next"`
+    const nextUrlMatch = nextLinkHeaderValue?.match(/<([^>]+)>/);
+    url = nextUrlMatch && nextUrlMatch[1] ? nextUrlMatch[1] : ''; // Extract the URL from the match
+  }
+
+  return results;
+}
+
 export interface GitHubReleaseData {
   tag_name: string;
   target_commitish: string;

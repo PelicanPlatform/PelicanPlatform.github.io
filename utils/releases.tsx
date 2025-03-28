@@ -1,4 +1,4 @@
-import { GitHubReleaseData } from './github';
+import {getAll, GitHubReleaseData} from './github';
 
 export type OrganizedReleasesType = {
   [key: string]: {
@@ -14,8 +14,7 @@ export async function fetchAllReleases(
   const apiUrl =
     'https://api.github.com/repos/PelicanPlatform/pelican/releases';
 
-  const response = await fetch(apiUrl);
-  let releases: GitHubReleaseData[] = await response.json();
+  let releases = await getAll(apiUrl)
 
   if (excludeReleaseCandidates) {
     releases = releases.filter(

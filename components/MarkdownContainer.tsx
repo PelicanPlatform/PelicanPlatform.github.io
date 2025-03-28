@@ -8,27 +8,27 @@ const MarkdownContainer = ({ content }: { content: string }) => {
       rehypePlugins={[rehypeRaw]}
       components={{
         h1: ({ node, children }) => (
-          <Typography variant='h4' pb={2}>
+          <Typography variant='h4' component={"h2"} gutterBottom>
             {children}
           </Typography>
         ),
         h2: ({ node, children }) => (
-          <Typography variant='h5' pb={2}>
+          <Typography variant='h5' component={"h3"} gutterBottom>
             {children}
           </Typography>
         ),
         h3: ({ node, children }) => (
-          <Typography variant='h6' pb={2}>
+          <Typography variant='h6' component={"h4"} gutterBottom>
             {children}
           </Typography>
         ),
         h4: ({ node, children }) => (
-          <Typography variant='subtitle1' pb={2}>
+          <Typography variant='subtitle1' pb={2} gutterBottom>
             {children}
           </Typography>
         ),
         h5: ({ node, children }) => (
-          <Typography variant='subtitle2' pb={2}>
+          <Typography variant='subtitle2' pb={2} gutterBottom>
             {children}
           </Typography>
         ),
@@ -41,13 +41,12 @@ const MarkdownContainer = ({ content }: { content: string }) => {
           </Typography>
         ),
         li: ({ node, children }) => (
-          <ListItem disablePadding sx={{ display: 'inline' }}>
+          <li>
             {children}
-            <br />
-          </ListItem>
+          </li>
         ),
         ul: ({ node, children }) => (
-          <List style={{ paddingLeft: '1rem' }}>{children}</List>
+          <ul style={{ paddingLeft: '1.5rem', marginBottom: '1rem' }}>{children}</ul>
         ),
         a: ({ children, href }) => (
           <Typography component='a' href={href} style={{ color: '#0885ff' }}>
