@@ -38,7 +38,10 @@ export async function getRawFile(
   );
 
   const res = await fetch(url, {
-    headers: { Accept: 'application/vnd.github.raw' },
+    headers: {
+      Accept: 'application/vnd.github.raw',
+      authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    },
   });
 
   return await res.text();
