@@ -14,10 +14,10 @@ import {
 export default async function Page() {
   const milestone = await getCurrentMilestone();
 
-  const preReleaseDate = new Date(
-    new Date(milestone.due_on).getTime() - 1000 * 60 * 60 * 24 * 7
-  ); // 7 days before release
-  const releaseDate = new Date(milestone.due_on);
+  const preReleaseDate = new Date(milestone.due_on);
+  const releaseDate = new Date(
+    new Date(milestone.due_on).getTime() + 1000 * 60 * 60 * 24 * 7
+  ); // 7 days after the pre-release date
 
   const releaseSchedule = {
     release_name: milestone.title.replace('v', ''),
