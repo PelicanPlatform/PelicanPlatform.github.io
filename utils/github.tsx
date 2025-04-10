@@ -59,7 +59,11 @@ export const getAll = async (apiUrl:string) => {
 
   while (true) {
 
-    const res = await fetch(url);
+    const res = await fetch(url, {
+      headers: {
+        authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+      },
+    });
     if (!res.ok) {
       throw new Error(`Failed to fetch: ${res.statusText}`);
     }
