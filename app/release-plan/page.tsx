@@ -42,7 +42,7 @@ export default async function Page() {
         </Typography>
         <Divider sx={{ marginBottom: '1em' }} />
         <Typography variant='body1' component='p'>
-          Pelican makes feature releases containing the development team's
+          Pelican makes feature releases containing the development team&apos;s
           latest work approximately once per month. These releases contain
           new features, code improvements and important bug fixes, which is
           why we recommend that you keep your Pelican installation up to date.
@@ -51,12 +51,12 @@ export default async function Page() {
           candidate that contains a checkpoint of the work we plan to turn
           into a feature release. Release candidates can be identified by their
           version number, which is the same as the next feature release version
-          but with a "-rc.X" suffix, such as "v7.18.0-rc.0". This release candidate
+          but with a &quot;-rc.X&quot; suffix, such as &quot;v7.18.0-rc.0&quot;. This release candidate
           is tested by our integration team until it meets our quality standards,
-          at which point the "-rc.X" suffix is dropped and the official release
-          is made (e.g. "v7.18.0"). Patches for that release series will be
+          at which point the &quot;-rc.X&quot; suffix is dropped and the official release
+          is made (e.g. &quot;v7.18.0&quot;). Patches for that release series will be
           backported as needed if significant bugs are found. When this happens,
-          we will increment the release number accordingly (e.g. "v7.18.1").
+          we will increment the release number accordingly (e.g. &quot;v7.18.1&quot;).
           <br /> <br />
           To download and install an official release, please see our{' '}
           <Link
