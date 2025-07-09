@@ -106,9 +106,12 @@ async function getCurrentMilestone(): Promise<GithubMilestoneData> {
 
   let milestones: GithubMilestoneData[] = await response.json();
 
-  // If the title is 'parking-lot' then skip it
+  // Filter out non-release milestones. Our milestones are named like "v7.18", but
+  // some milestones are not actual releases (e.g. "parking-lot", "april-docs-focus").
+  const semverRegex = /^v?\d+\.\d+$/;
   milestones = milestones.filter(
-    (milestone) => milestone.title !== 'parking-lot'
+    (milestone) =>
+      semverRegex.test(milestone.title)
   );
 
   // simple type sanity checks, not exhaustive
