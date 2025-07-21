@@ -46,6 +46,9 @@ const ReleaseSection = ({ mainReleaseName, organizedReleases }: ReleaseSectionPr
                 </Box>
             ) : null}
 
+            <Typography variant='h5' component='h3'>
+                Specific Release Notes
+            </Typography>
             {allReleases.map(
                 (release: GitHubReleaseData) => (
                     <Accordion key={release.tag_name}>
@@ -98,9 +101,11 @@ function parseIntoSections(releases: GitHubReleaseData[]): Record<string, string
                 const placeholders = ["N/A", "None", "TBD", "...", "TODO"];
 
                 // Check if the bullet point starts with a placeholder
-                if (placeholders.some(placeholder => trimmedLine.slice(2).trim().startsWith(placeholder))) {
+                const bulletContent = trimmedLine.slice(2).trim();
+                if (placeholders.some(placeholder => bulletContent.startsWith(placeholder))) {
                     continue;
                 } else {
+                    // note: this pushes the bullet point itself, too
                     result[currentSection].push(trimmedLine);
                 }
 
