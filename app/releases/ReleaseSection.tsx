@@ -18,7 +18,7 @@ const ReleaseSection = ({ mainReleaseName, organizedReleases }: ReleaseSectionPr
         : mainReleaseData.minorReleases;
 
     // Parse sections in reverse so that the original major version is first in the lists
-    const parsedSections = parseIntoSections(allReleases.toReversed());
+    const parsedSections = parseIntoSections([...allReleases].reverse());
 
     const aggregatedBody = Object.entries(parsedSections).reduce(
         (body, [sectionTitle, sectionContent]) => {
@@ -41,14 +41,10 @@ const ReleaseSection = ({ mainReleaseName, organizedReleases }: ReleaseSectionPr
             {mainReleaseData.mainRelease &&
                 mainReleaseData.mainRelease.body !== '' ? (
                 <Box pb={4}>
-                    {/* <ReleaseBody content={mainReleaseData.mainRelease.body} /> */}
                     <ReleaseBody content={aggregatedBody} />
                 </Box>
             ) : null}
 
-            <Typography variant='h5' component='h3'>
-                Specific Release Notes
-            </Typography>
             {allReleases.map(
                 (release: GitHubReleaseData) => (
                     <Accordion key={release.tag_name}>
