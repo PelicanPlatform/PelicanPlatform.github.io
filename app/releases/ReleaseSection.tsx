@@ -38,12 +38,9 @@ const ReleaseSection = ({ mainReleaseName, organizedReleases }: ReleaseSectionPr
                 {mainReleaseName[0].toUpperCase() + mainReleaseName.slice(1)}
             </Typography>
 
-            {mainReleaseData.mainRelease &&
-                mainReleaseData.mainRelease.body !== '' ? (
-                <Box pb={4}>
-                    <ReleaseBody content={aggregatedBody} />
-                </Box>
-            ) : null}
+            <Box pb={4}>
+                <ReleaseBody content={aggregatedBody} />
+            </Box>
 
             {allReleases.map(
                 (release: GitHubReleaseData) => (
@@ -101,7 +98,7 @@ function parseIntoSections(releases: GitHubReleaseData[]): Record<string, string
                 if (placeholders.some(placeholder => bulletContent.startsWith(placeholder))) {
                     continue;
                 } else {
-                    // note: this pushes the bullet point itself, too
+                    // note: this pushes the bullet point itself, too (i.e. "- xyz" or "* xyz")
                     result[currentSection].push(trimmedLine);
                 }
 
