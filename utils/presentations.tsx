@@ -1,16 +1,6 @@
-import { getTree, getPaths, getRawFile } from './github';
-import fs from 'fs';
-import matter from 'gray-matter';
-import * as https from 'node:https';
-
-type website = 'htcondor' | 'path' | 'osg' | 'chtc' | 'pelican';
-type presentation_type = 'presentations';
-
-interface Image {
-  path: string;
-  alt: string;
-}
-
+/**
+ * The full presentation data structure from Figshare.
+ */
 export interface Presentation {
   id: number;
   title: string;
@@ -74,6 +64,9 @@ export interface Presentation {
   };
 }
 
+/**
+ * The presentation data with additional fields used for the site.
+ */
 export interface BackendPresentation extends Presentation {
   slug: string[];
   path: string;
@@ -92,10 +85,16 @@ export async function getPresentations(): Promise<BackendPresentation[]> {
       );
     }
 
-    const data = await response.json();
-    // console.log("Presentations fetched from Figshare:", data);
+    // does not return full data, just slimmed down
+    const slimData = await response.json();
 
-    return data.map((presentation: Presentation) => ({
+    // get the full data for each presentation from the API
+    const fullDataPromises = slimData.map((item: { url: string; }) =>
+      fetch(item.url).then(res => res.json())
+    );
+    const fullData = await Promise.all(fullDataPromises);
+
+    return fullData.map((presentation) => ({
       ...presentation,
       slug: presentation.title
         .toLowerCase()
@@ -129,4 +128,23 @@ export async function getPresentation(
     console.error('Error fetching presentation from Figshare:', error);
     return Promise.reject(error);
   }
+}
+
+export function getTagColor(tag: string): string {
+  // Simple hash function to generate a number from the tag string
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) {
+    hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Generate hue from hash but skip harsh ranges (e.g., avoid 60–140 for green/yellow)
+  let hue = Math.abs(hash) % 360;
+  if (hue >= 60 && hue <= 140) {
+    hue = (hue + 80) % 360;
+  }
+
+  const saturation = 70;
+  const lightness = 40;
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }

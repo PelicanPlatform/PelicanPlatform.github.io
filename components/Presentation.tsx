@@ -1,31 +1,28 @@
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Chip, Container, Typography } from '@mui/material';
 import Link from 'next/link';
-import DownloadIcon from '@mui/icons-material/Download';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Balancer from 'react-wrap-balancer';
+import { BackendPresentation, getTagColor } from '@/utils/presentations';
 
 interface PresentationCardProps {
   href: string;
-  presentation: PresentationProps;
+  presentation: BackendPresentation;
 }
 
-export interface PresentationProps {
-  id: number;
-  title: string;
-  description: string;
-  authors: {
-    id: number;
-    full_name: string;
-    first_name: string;
-    last_name: string;
-    is_active: boolean;
-    url_name: string;
-    orcid_id: string | null;
-  }[];
-  published_date: string;
-  download_url: string;
-  path: string;
-  thumb: string;
+const Tag = ({ tag }: { tag: string }) => {
+  const color = getTagColor(tag);
+  return (
+    <Chip
+      label={tag}
+      size='small'
+      sx={{
+        marginRight: 0.5,
+        marginBottom: 0.5,
+        backgroundColor: color,
+        color: 'white',
+      }}
+    />
+  );
 }
 
 export const PresentationCard = ({
@@ -60,13 +57,13 @@ export const PresentationCard = ({
           <Typography variant='h6' sx={{ fontWeight: 'bold', marginBottom: 1 }}>
             {presentation.title}
           </Typography>
-          {/*<Typography*/}
-          {/*    variant="body2"*/}
-          {/*    color="textSecondary"*/}
-          {/*    sx={{ marginBottom: 2 }}*/}
-          {/*>*/}
-          {/*    By {presentation.authors}*/}
-          {/*</Typography>*/}
+
+          <Box display='flex' flexWrap='wrap'>
+            {presentation.tags.map((tag) => (
+              <Tag key={tag} tag={tag} />
+            ))}
+          </Box>
+          
           <Typography
             variant='body2'
             color='textSecondary'
@@ -75,31 +72,20 @@ export const PresentationCard = ({
             Posted on{' '}
             {new Date(presentation.published_date).toLocaleDateString()}
           </Typography>
-          {/*<Typography*/}
-          {/*    variant="body2"*/}
-          {/*    color="textSecondary"*/}
-          {/*    sx={{*/}
-          {/*        marginBottom: "auto",*/}
-          {/*    }}*/}
-          {/*>*/}
-          {/*    {presentation.excerpt}*/}
-          {/*</Typography>*/}
         </Box>
       </Link>
     </Box>
   );
 };
 
-export const Presentation = ({
+export const PresentationDisplay = ({
   id,
   title,
   published_date,
   path,
   authors,
-  description,
-  download_url,
-  thumb,
-}: PresentationProps) => {
+  tags
+}: BackendPresentation) => {
   return (
     <Container maxWidth='md'>
       <Box pt={6}>
@@ -121,6 +107,11 @@ export const Presentation = ({
             <Typography variant='h5'>
               {new Date(published_date).toLocaleDateString()}
             </Typography>
+          </Box>
+          <Box mt={2} display='flex' flexWrap='wrap'>
+            {tags.map((tag) => (
+              <Tag key={tag} tag={tag} />
+            ))}
           </Box>
         </Box>
 
@@ -148,16 +139,6 @@ export const Presentation = ({
         </Box>
 
         <Box pt={4} display='flex' justifyContent='center' gap={2}>
-          {/*<Button*/}
-          {/*    variant="contained"*/}
-          {/*    color="primary"*/}
-          {/*    startIcon={<DownloadIcon />}*/}
-          {/*    href={download_url}*/}
-          {/*    target="_blank"*/}
-          {/*    rel="noopener noreferrer"*/}
-          {/*>*/}
-          {/*    Download Presentation*/}
-          {/*</Button>*/}
           <Button
             variant='contained'
             color='primary'
