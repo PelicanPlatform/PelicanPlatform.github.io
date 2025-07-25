@@ -12,6 +12,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { GitHubReleaseData } from '@/utils/github';
 import { organizeReleases } from '@/utils/releases';
 import ReleaseBody from './ReleaseBody';
+import ReleaseSection from './ReleaseSection';
 
 const Page = async () => {
   const organizedReleases = await organizeReleases();
@@ -29,43 +30,13 @@ const Page = async () => {
           }}
         />
       </Box>
-      {Object.entries(organizedReleases).map(
-        ([mainReleaseName, mainReleaseData], index) => {
-          return (
-            <Box key={index} pb={4}>
-              <Typography variant='h3' component='h2'>
-                {mainReleaseName[0].toUpperCase() + mainReleaseName.slice(1)}
-              </Typography>
-
-              {mainReleaseData.mainRelease &&
-              mainReleaseData.mainRelease.body !== '' ? (
-                <Box pb={4}>
-                  <ReleaseBody content={mainReleaseData.mainRelease.body} />
-                </Box>
-              ) : null}
-
-              {organizedReleases[mainReleaseName].minorReleases.map(
-                (release: GitHubReleaseData) => (
-                  <Accordion key={release.tag_name}>
-                    <AccordionSummary
-                      expandIcon={<ArrowDropDownIcon />}
-                      aria-controls={`${release.tag_name}-content`}
-                      id={`${release.tag_name}-header`}
-                    >
-                      <Typography variant='h5' component='h2'>
-                        {release.tag_name}
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <ReleaseBody content={release.body} />
-                    </AccordionDetails>
-                  </Accordion>
-                )
-              )}
-            </Box>
-          );
-        }
-      )}
+      {Object.keys(organizedReleases).map((mainReleaseName) => (
+        <ReleaseSection
+          key={mainReleaseName}
+          mainReleaseName={mainReleaseName}
+          organizedReleases={organizedReleases}
+        />
+      ))}
     </Container>
   );
 };
