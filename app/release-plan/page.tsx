@@ -9,6 +9,7 @@ import {
   TableCell,
   TableRow,
   TableBody,
+  Link,
 } from '@mui/material';
 
 export default async function Page() {
@@ -41,16 +42,40 @@ export default async function Page() {
         </Typography>
         <Divider sx={{ marginBottom: '1em' }} />
         <Typography variant='body1' component='p'>
-          Pelican makes approximately monthly feature releases containing all
-          the latest work of the development team.
+          Pelican makes feature releases containing the development team&apos;s
+          latest work approximately once per month. These releases contain
+          new features, code improvements and important bug fixes, which is
+          why we recommend that you keep your Pelican installation up to date.
           <br /> <br />
-          On the first Thursday of the month, the Pelican will release a
-          pre-release version. This can be identified as version `X.Y.Z*` such
-          as `7.6.0`. This version will then be tested by the integration team
-          and a feature release will occur once their approval is obtained,
-          ideally a week later. Further patches to that release will be
-          backported as needed if significant bugs are found and will increment
-          the release number accordingly (e.g. `7.6.1`.)
+          On the first Thursday of the month, Pelican will create a release
+          candidate that contains a checkpoint of the work we plan to turn
+          into a feature release. Release candidates can be identified by their
+          version number, which is the same as the next feature release version
+          but with a &quot;-rc.X&quot; suffix, such as &quot;v7.18.0-rc.0&quot;. This release candidate
+          is tested by our integration team until it meets our quality standards,
+          at which point the &quot;-rc.X&quot; suffix is dropped and the official release
+          is made (e.g. &quot;v7.18.0&quot;). Patches for that release series will be
+          backported as needed if significant bugs are found. When this happens,
+          we will increment the release number accordingly (e.g. &quot;v7.18.1&quot;).
+          <br /> <br />
+          To download and install an official release, please see our{' '}
+          <Link
+            style={{ color: '#0885ff' }}
+            href='https://docs.pelicanplatform.org/install'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            Pelican Installation Guide
+          </Link>.
+          For a full list of Pelican releases and release candidates, please see our{' '}
+          <Link
+            style={{ color: '#0885ff' }}
+            href='https://github.com/PelicanPlatform/pelican/releases'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            GitHub Releases page
+          </Link>.
         </Typography>
         <Paper
           sx={{
@@ -106,9 +131,12 @@ async function getCurrentMilestone(): Promise<GithubMilestoneData> {
 
   let milestones: GithubMilestoneData[] = await response.json();
 
-  // If the title is 'parking-lot' then skip it
+  // Filter out non-release milestones. Our milestones are named like "v7.18", but
+  // some milestones are not actual releases (e.g. "parking-lot", "april-docs-focus").
+  const semverRegex = /^v?\d+\.\d+$/;
   milestones = milestones.filter(
-    (milestone) => milestone.title !== 'parking-lot'
+    (milestone) =>
+      semverRegex.test(milestone.title)
   );
 
   // simple type sanity checks, not exhaustive
