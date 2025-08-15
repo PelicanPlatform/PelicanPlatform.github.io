@@ -82,9 +82,9 @@ export const PresentationDisplay = ({
   id,
   title,
   published_date,
-  path,
   authors,
-  tags
+  tags,
+  figshare_url,
 }: BackendPresentation) => {
   return (
     <Container maxWidth='md'>
@@ -143,7 +143,7 @@ export const PresentationDisplay = ({
             variant='contained'
             color='primary'
             startIcon={<OpenInNewIcon />}
-            href={path}
+            href={figshare_url}
             target='_blank'
             rel='noopener noreferrer'
           >

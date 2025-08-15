@@ -69,8 +69,6 @@ export interface Presentation {
  */
 export interface BackendPresentation extends Presentation {
   slug: string[];
-  path: string;
-  download_url: string;
 }
 
 export async function getPresentations(): Promise<BackendPresentation[]> {
@@ -92,7 +90,7 @@ export async function getPresentations(): Promise<BackendPresentation[]> {
     const fullDataPromises = slimData.map((item: { url: string; }) =>
       fetch(item.url).then(res => res.json())
     );
-    const fullData = await Promise.all(fullDataPromises);
+    const fullData: Presentation[] = await Promise.all(fullDataPromises);
 
     return fullData.map((presentation) => ({
       ...presentation,
