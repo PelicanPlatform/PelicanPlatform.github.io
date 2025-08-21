@@ -1,5 +1,5 @@
-import matter from "gray-matter";
-import { getPaths, getRawFile, getTree } from "./github";
+import matter from 'gray-matter';
+import { getPaths, getRawFile, getTree } from './github';
 
 type Website = 'htcondor' | 'path' | 'osg' | 'chtc' | 'pelican';
 
@@ -47,7 +47,7 @@ function isPresentation(path: string) {
   return path.search(regex) !== -1;
 }
 
-function filterPresentation(presentation: BackendPresentation) {
+function filterVisiblePresentations(presentation: BackendPresentation) {
   const isPublished = presentation.published ?? true;
   const isOnPelican = presentation.publish_on.includes('pelican');
   return isPublished && isOnPelican;
@@ -56,24 +56,26 @@ function filterPresentation(presentation: BackendPresentation) {
 export async function getPresentations(
   organization: string,
   repo: string,
-  branch: string,
+  branch: string
 ): Promise<BackendPresentation[]> {
   const tree = await getTree(organization, repo, branch);
   const paths = getPaths(tree);
 
   // Filter paths to only include presentation markdown files
   return Promise.all(
-    paths.filter(isPresentation).map(async (path) => await getPresentation(organization, repo, path, branch)),
-  ).then((presentations) =>
-    presentations.filter(filterPresentation),
-  );
+    paths
+      .filter(isPresentation)
+      .map(
+        async (path) => await getPresentation(organization, repo, path, branch)
+      )
+  ).then((presentations) => presentations.filter(filterVisiblePresentations));
 }
 
 export async function getPresentation(
   organization: string,
   repo: string,
   path: string,
-  branch: string,
+  branch: string
 ): Promise<BackendPresentation> {
   const text = await getRawFile(organization, repo, path, branch);
   const frontMatter = matter(text);
@@ -88,10 +90,12 @@ export async function getPresentation(
     description: frontMatter.data.description,
     keywords: frontMatter.data.keywords,
     links: frontMatter.data.links,
-    thumbnail: frontMatter.data.image ? {
-      src: frontMatter.data.image.path,
-      alt: frontMatter.data.image.alt,
-    } : undefined,
+    thumbnail: frontMatter.data.image
+      ? {
+          src: frontMatter.data.image.path,
+          alt: frontMatter.data.image.alt,
+        }
+      : undefined,
     youtubeId: frontMatter.data.youtube_video_id,
     slug: getSlug(path),
     path: path,

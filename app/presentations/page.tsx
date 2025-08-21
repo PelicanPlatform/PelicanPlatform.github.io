@@ -1,7 +1,6 @@
 import { PresentationGrid } from '@/components/PresentationGrid';
 import { getPresentations } from '@/utils/presentations';
-import { PresentationCard } from '@chtc/web-components';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 export default async function Page() {
   const presentations = await getPresentations('CHTC', 'Presentations', 'main');
