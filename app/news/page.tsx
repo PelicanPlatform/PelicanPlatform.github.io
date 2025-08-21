@@ -1,4 +1,4 @@
-import { Box, Typography, Grid, Container } from '@mui/material';
+import { Box, Typography, GridLegacy, Container } from '@mui/material';
 import { HorizontalArticleCard, ArticleCard } from '@chtc/web-components';
 import { getArticles, filterArticles } from '../../utils/articles';
 
@@ -20,9 +20,9 @@ export default async function Page() {
         <Typography variant={'h2'}>News</Typography>
       </Box>
       <Container maxWidth={'xl'}>
-        <Grid container spacing={1}>
+        <GridLegacy container spacing={1}>
           {articles.map((article) => (
-            <Grid key={article.slug.join('-')} item xs={12} md={6} lg={4}>
+            <GridLegacy key={article.slug.join('-')} item xs={12} md={6} lg={4}>
               <ArticleCard
                 href={`/news/${article.slug.join('/')}`}
                 article={{
@@ -31,9 +31,9 @@ export default async function Page() {
                   excerpt: article.excerpt,
                 }}
               />
-            </Grid>
+            </GridLegacy>
           ))}
-        </Grid>
+        </GridLegacy>
       </Container>
     </>
   );

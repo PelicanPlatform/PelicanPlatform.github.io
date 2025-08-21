@@ -1,7 +1,7 @@
 'use client';
 
 import ExportedImage from 'next-image-export-optimizer';
-import { Grid, Box, Container, Divider, Typography } from '@mui/material';
+import { GridLegacy, Box, Container, Divider, Typography } from '@mui/material';
 
 import chtcLogo from '../../public/static/images/CHTC_Logo.svg';
 import morgridgeLogo from '../../public/static/images/Morgridge_Logo.png';
@@ -13,17 +13,17 @@ const Footer = () => {
     <>
       <Box mt={1} sx={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
         <Container maxWidth={'xl'}>
-          <Grid
+          <GridLegacy
             container
             sx={{ display: 'flex', justifyContent: 'center' }}
             spacing={2}
           >
-            <Grid item>
+            <GridLegacy item>
               <Link href={'https://chtc.cs.wisc.edu'}>
                 <ExportedImage src={chtcLogo} alt={'CHTC Logo'} height={40} />
               </Link>
-            </Grid>
-            <Grid item>
+            </GridLegacy>
+            <GridLegacy item>
               <Link href={'https://morgridge.org'}>
                 <ExportedImage
                   src={morgridgeLogo}
@@ -31,30 +31,30 @@ const Footer = () => {
                   height={40}
                 />
               </Link>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </Container>
       </Box>
       <Box sx={{ backgroundColor: '#F5F5F5' }} pt={3}>
         <Container maxWidth={'xl'}>
-          <Grid container justifyContent={'center'} spacing={2}>
-            <Grid item>
+          <GridLegacy container justifyContent={'center'} spacing={2}>
+            <GridLegacy item>
               <Typography>
                 <Link href={'./branding'}>Branding</Link>
               </Typography>
-            </Grid>
-            <Grid item>
+            </GridLegacy>
+            <GridLegacy item>
               <Typography>
                 <Link href={'./contact'}>Contact Us</Link>
               </Typography>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </Container>
       </Box>
       <Box sx={{ backgroundColor: '#F5F5F5' }} py={1}>
         <Container maxWidth={'xl'}>
-          <Grid container justifyContent={'center'}>
-            <Grid xs={12} lg={10} item>
+          <GridLegacy container justifyContent={'center'}>
+            <GridLegacy xs={12} lg={10} item>
               <Box>
                 <Typography
                   variant={'subtitle1'}
@@ -77,8 +77,8 @@ const Footer = () => {
                   Foundation.
                 </Typography>
               </Box>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </Container>
       </Box>
     </>

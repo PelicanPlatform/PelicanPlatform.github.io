@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography, Divider } from '@mui/material';
+import { Box, Container, GridLegacy, Typography, Divider } from '@mui/material';
 import { LeaderCard, StaffCard } from './cards';
 import React from 'react';
 import { getStaff } from '../../utils/staff';
@@ -28,25 +28,25 @@ export default async function Page() {
   return (
     <Box pt={6}>
       <Container maxWidth={'xl'}>
-        <Grid container justifyContent={'center'}>
-          <Grid item xs={12} sm={6} lg={5}>
+        <GridLegacy container justifyContent={'center'}>
+          <GridLegacy item xs={12} sm={6} lg={5}>
             <LeaderCard {...promoted[0]} />
-          </Grid>
-        </Grid>
-        <Grid container justifyContent={'center'}>
+          </GridLegacy>
+        </GridLegacy>
+        <GridLegacy container justifyContent={'center'}>
           {promoted.slice(1, 3).map((member) => {
             return (
-              <Grid key={member.name} item xs={12} sm={6} lg={5}>
+              <GridLegacy key={member.name} item xs={12} sm={6} lg={5}>
                 <LeaderCard {...member} />
-              </Grid>
+              </GridLegacy>
             );
           })}
-        </Grid>
-        <Grid container justifyContent={'center'}>
+        </GridLegacy>
+        <GridLegacy container justifyContent={'center'}>
           {staff.map((member) => (
             <StaffCard key={member.name} {...member} />
           ))}
-        </Grid>
+        </GridLegacy>
         {pastStaff.length > 0 && (
           <>
             <Box pt={6} pb={4}>
@@ -61,11 +61,11 @@ export default async function Page() {
                 Previous Staff
               </Typography>
             </Box>
-            <Grid container justifyContent={'center'}>
+            <GridLegacy container justifyContent={'center'}>
               {pastStaff.map((member) => (
                 <StaffCard key={member.name} {...member} />
               ))}
-            </Grid>
+            </GridLegacy>
           </>
         )}
       </Container>

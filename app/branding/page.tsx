@@ -1,7 +1,7 @@
 'use client';
 
 import ExportedImage from 'next-image-export-optimizer';
-import { Box, Container, Grid, Typography, Stack, Chip } from '@mui/material';
+import { Box, Container, GridLegacy, Typography, Stack, Chip } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import pelicanDiagram from '../../public/static/images/pelican-concept-map_Realistic.png';
@@ -12,8 +12,8 @@ export default function Page() {
   return (
     <Box pt={6}>
       <Container maxWidth={'xl'}>
-        <Grid container justifyContent={'Center'}>
-          <Grid item xs={12} md={10} lg={8}>
+        <GridLegacy container justifyContent={'Center'}>
+          <GridLegacy item xs={12} md={10} lg={8}>
             <Typography variant={'h2'} pb={2}>
               Branding
             </Typography>
@@ -74,8 +74,8 @@ export default function Page() {
                 alt={'Pelican Concept map'}
               />
             </a>
-          </Grid>
-        </Grid>
+          </GridLegacy>
+        </GridLegacy>
       </Container>
     </Box>
   );
