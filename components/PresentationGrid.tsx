@@ -5,6 +5,32 @@ import { PresentationCard } from "@chtc/web-components";
 import { Box, Button, Checkbox, Container, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
+function getAllKeywords(presentations: BackendPresentation[]): string[] {
+  const keywords: string[] = [];
+  presentations.forEach(p => {
+    if (p.keywords) {
+      for (const keyword of p.keywords) {
+        if (!keywords.includes(keyword)) {
+          keywords.push(keyword);
+        }
+      }
+    }
+  });
+  keywords.sort();
+  return keywords;
+}
+
+function getAllEvents(presentations: BackendPresentation[]): string[] {
+  const events: string[] = [];
+  presentations.forEach(p => {
+    if (p.event && !events.includes(p.event)) {
+      events.push(p.event);
+    }
+  });
+  presentations.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return events;
+}
+
 export function PresentationGrid({ presentations }: { presentations: BackendPresentation[] }) {
   const [eventFilter, setEventFilter] = useState<string>("");
   const [keywordFilter, setKeywordFilter] = useState<string[]>([]);
@@ -18,25 +44,15 @@ export function PresentationGrid({ presentations }: { presentations: BackendPres
         const matchesEvent = (eventFilter === "") || presentation.event === eventFilter;
         const matchesKeywords = (keywordFilter.length === 0) || keywordFilter.some(keyword => (presentation.keywords?.includes(keyword) ?? false));
         return matchesEvent && matchesKeywords;
-      })
-      .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      });
+    // Sort presentations by date, newest first
+    newFiltered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
     setFilteredPresentations(newFiltered);
   }, [eventFilter, keywordFilter, presentations]);
 
-  // All events from every presentation
-  const allEvents = presentations
-    .map(p => p.event)
-    .filter((value, index, self) => self.indexOf(value) === index)
-    .filter(Boolean)
-    .toSorted();
-
-  // All keywords from every presentation
-  const allKeywords = presentations
-    .map(p => p.keywords)
-    .filter(keywords => keywords !== undefined)
-    .flat()
-    .filter((value, index, self) => self.indexOf(value) === index)
-    .toSorted();
+  const allEvents = getAllEvents(presentations)
+  const allKeywords = getAllKeywords(presentations)
 
   return <Box>
     <Box display="flex" flexDirection="row" ml={3} gap={2}>

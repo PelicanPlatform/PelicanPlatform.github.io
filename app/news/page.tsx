@@ -25,11 +25,7 @@ export default async function Page() {
             <GridLegacy key={article.slug.join('-')} item xs={12} md={6} lg={4}>
               <ArticleCard
                 href={`/news/${article.slug.join('/')}`}
-                article={{
-                  image: article.image,
-                  title: article.title,
-                  excerpt: article.excerpt,
-                }}
+                article={article}
               />
             </GridLegacy>
           ))}
