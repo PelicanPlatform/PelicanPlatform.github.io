@@ -4,7 +4,7 @@ import React, { useState, ReactNode, useRef, ComponentType } from 'react';
 import {
   Box,
   Button,
-  Grid,
+  GridLegacy,
   IconButton,
   Menu,
   MenuItem,
@@ -52,15 +52,15 @@ export const DesktopMenu = ({
           ))}
       </Box>
       <Box marginLeft={'auto'}>
-        <Grid container spacing={1}>
+        <GridLegacy container spacing={1}>
           {menuItems
             .filter((x) => ('type' in x ? x?.type == 'icon' : false))
             .map((item) => (
-              <Grid key={item.value} item>
+              <GridLegacy key={item.value} item>
                 <HeaderIconLink {...(item as HeaderLinkItem)} />
-              </Grid>
+              </GridLegacy>
             ))}
-        </Grid>
+        </GridLegacy>
       </Box>
     </>
   );

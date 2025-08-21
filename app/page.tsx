@@ -3,7 +3,7 @@ import { BackgroundPage } from '@/components/Background';
 import {
   Box,
   Container,
-  Grid,
+  GridLegacy,
   Typography,
   Link,
   Divider,
@@ -61,8 +61,8 @@ export default async function Home() {
       <BackgroundPage image={hero} />
       <Container maxWidth={'xl'}>
         <Box sx={{ paddingTop: '4rem', paddingBottom: '10rem' }}>
-          <Grid container spacing={2}>
-            <Grid
+          <GridLegacy container spacing={2}>
+            <GridLegacy
               item
               xs={12}
               lg={7}
@@ -107,8 +107,8 @@ export default async function Home() {
                   Robust and Maintainable for Providers
                 </Typography>
               </Box>
-            </Grid>
-            <Grid
+            </GridLegacy>
+            <GridLegacy
               item
               xs={6}
               lg={5}
@@ -121,8 +121,8 @@ export default async function Home() {
                 alt={'Sky level diagram of Pelican'}
                 width={1000}
               />
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </Box>
         <Box sx={{ position: 'relative' }}>
           <Box
@@ -131,8 +131,8 @@ export default async function Home() {
               top: { xs: '-6rem', sm: '-4rem', md: '-5rem', lg: '-6rem' },
             }}
           >
-            <Grid container>
-              <Grid item xs={12} lg={10} sx={{ margin: 'auto' }}>
+            <GridLegacy container>
+              <GridLegacy item xs={12} lg={10} sx={{ margin: 'auto' }}>
                 <Box
                   sx={{
                     position: 'relative',
@@ -150,8 +150,8 @@ export default async function Home() {
                     APIs and client tools.
                   </Typography>
                 </Box>
-              </Grid>
-            </Grid>
+              </GridLegacy>
+            </GridLegacy>
           </Box>
         </Box>
       </Container>
@@ -164,8 +164,8 @@ export default async function Home() {
         }}
       >
         <Container maxWidth={'xl'}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+          <GridLegacy container spacing={2}>
+            <GridLegacy item xs={12} md={6}>
               <Box sx={{ borderRadius: '1rem', overflow: 'hidden' }}>
                 <iframe
                   width='100%'
@@ -175,8 +175,8 @@ export default async function Home() {
                   src='https://map.opensciencegrid.org/map/iframe?view=OpenScienceDataFederation&navigation=0#45.737115,-90.140436|2'
                 ></iframe>
               </Box>
-            </Grid>
-            <Grid item xs={12} md={6} sx={{ display: 'flex' }}>
+            </GridLegacy>
+            <GridLegacy item xs={12} md={6} sx={{ display: 'flex' }}>
               <Box
                 sx={{
                   paddingBottom: '1rem',
@@ -259,13 +259,13 @@ export default async function Home() {
                   </Box>
                 </Box>
               </Box>
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </Container>
         <Container maxWidth={'xl'}>
           <Box mt={6}>
-            <Grid container spacing={2}>
-              <Grid
+            <GridLegacy container spacing={2}>
+              <GridLegacy
                 item
                 xs={12}
                 sm={6}
@@ -287,23 +287,19 @@ export default async function Home() {
                   </Link>
                 </Typography>
                 {userStories.length > 0 && (
-                  <Grid
+                  <GridLegacy
                     key={userStories[userStories.length - 1].slug.join('-')}
                     sx={{ backgroundColor: '#FFFFFF' }}
                   >
                     <ArticleCard
                       key={userStories[userStories.length - 1].slug.join('-')}
                       href={`/user-stories/${userStories[userStories.length - 1].slug.join('/')}`}
-                      article={{
-                        image: userStories[userStories.length - 1].image,
-                        title: userStories[userStories.length - 1].title,
-                        excerpt: userStories[userStories.length - 1].excerpt,
-                      }}
+                      article={userStories[userStories.length - 1]}
                     />
-                  </Grid>
+                  </GridLegacy>
                 )}
-              </Grid>
-              <Grid
+              </GridLegacy>
+              <GridLegacy
                 item
                 xs={12}
                 sm={6}
@@ -324,22 +320,18 @@ export default async function Home() {
                   </Link>
                 </Typography>
                 {news.length > 0 && (
-                  <Grid
+                  <GridLegacy
                     key={news[news.length - 1].slug.join('-')}
                     sx={{ backgroundColor: '#FFFFFF' }}
                   >
                     <ArticleCard
                       href={`/news/${news[news.length - 1].slug.join('/')}`}
-                      article={{
-                        image: news[news.length - 1].image,
-                        title: news[news.length - 1].title,
-                        excerpt: news[news.length - 1].excerpt,
-                      }}
+                      article={news[news.length - 1]}
                     />
-                  </Grid>
+                  </GridLegacy>
                 )}
-              </Grid>
-              <Grid
+              </GridLegacy>
+              <GridLegacy
                 item
                 xs={12}
                 sm={6}
@@ -355,8 +347,8 @@ export default async function Home() {
                   Latest Releases
                 </Typography>
                 <Releases />
-              </Grid>
-            </Grid>
+              </GridLegacy>
+            </GridLegacy>
             <Box sx={{ mt: 6 }}>
               <VideoCard
                 src={

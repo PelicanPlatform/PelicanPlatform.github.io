@@ -1,12 +1,12 @@
 import ExportedImage from 'next-image-export-optimizer';
-import { Box, Grid, Typography, Paper } from '@mui/material';
+import { Box, GridLegacy, Typography, Paper } from '@mui/material';
 import React from 'react';
 import { Staff } from '@/utils/staff';
 
 export function LeaderCard({ name, title, image, institution }: Staff) {
   return (
-    <Grid container spacing={2} justifyContent={'center'} mb={2}>
-      <Grid item xs={7} sm={6} md={5}>
+    <GridLegacy container spacing={2} justifyContent={'center'} mb={2}>
+      <GridLegacy item xs={7} sm={6} md={5}>
         <Paper
           sx={{
             padding: 2,
@@ -26,9 +26,9 @@ export function LeaderCard({ name, title, image, institution }: Staff) {
             />
           </Box>
         </Paper>
-      </Grid>
+      </GridLegacy>
 
-      <Grid item sx={{ pl: 1, display: 'flex', flexDirection: 'column' }}>
+      <GridLegacy item sx={{ pl: 1, display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ m: 'auto' }}>
           <Typography variant={'h5'} color={'primary.dark'}>
             {name}
@@ -36,8 +36,8 @@ export function LeaderCard({ name, title, image, institution }: Staff) {
           <Typography variant={'body1'}>{title}</Typography>
           <Typography variant={'body1'}>{institution}</Typography>
         </Box>
-      </Grid>
-    </Grid>
+      </GridLegacy>
+    </GridLegacy>
   );
 }
 
