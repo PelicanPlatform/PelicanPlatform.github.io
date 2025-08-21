@@ -61,9 +61,9 @@ let theme = createTheme({
       }
     },
     MuiButtonBase: {
-        defaultProps: {
-            LinkComponent: LinkBehavior
-        }
+      defaultProps: {
+        LinkComponent: LinkBehavior
+      }
     }
   },
 });

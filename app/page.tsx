@@ -172,7 +172,7 @@ export default async function Home() {
                   height='500px'
                   frameBorder='0'
                   allow='fullscreen'
-                  src='https://map.openscienceGridLegacy.org/map/iframe?view=OpenScienceDataFederation&navigation=0#45.737115,-90.140436|2'
+                  src='https://map.opensciencegrid.org/map/iframe?view=OpenScienceDataFederation&navigation=0#45.737115,-90.140436|2'
                 ></iframe>
               </Box>
             </GridLegacy>
