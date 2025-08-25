@@ -4,7 +4,7 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    command: /bin/bash -c "pnpm install && pnpm run dev"
+    command: /bin/bash -c "npm install && npm run dev"
     ports:
       - "3000:3000"
     stdin_open: true
