@@ -18,12 +18,12 @@ const Footer = () => {
             sx={{ display: 'flex', justifyContent: 'center' }}
             spacing={2}
           >
-            <Grid item>
+            <Grid>
               <Link href={'https://chtc.cs.wisc.edu'}>
                 <ExportedImage src={chtcLogo} alt={'CHTC Logo'} height={40} />
               </Link>
             </Grid>
-            <Grid item>
+            <Grid>
               <Link href={'https://morgridge.org'}>
                 <ExportedImage
                   src={morgridgeLogo}
@@ -38,12 +38,12 @@ const Footer = () => {
       <Box sx={{ backgroundColor: '#F5F5F5' }} pt={3}>
         <Container maxWidth={'xl'}>
           <Grid container justifyContent={'center'} spacing={2}>
-            <Grid item>
+            <Grid>
               <Typography>
                 <Link href={'./branding'}>Branding</Link>
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Typography>
                 <Link href={'./contact'}>Contact Us</Link>
               </Typography>
@@ -54,7 +54,11 @@ const Footer = () => {
       <Box sx={{ backgroundColor: '#F5F5F5' }} py={1}>
         <Container maxWidth={'xl'}>
           <Grid container justifyContent={'center'}>
-            <Grid xs={12} lg={10} item>
+            <Grid
+              size={{
+                xs: 12,
+                lg: 10
+              }}>
               <Box>
                 <Typography
                   variant={'subtitle1'}

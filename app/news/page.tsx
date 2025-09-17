@@ -22,7 +22,13 @@ export default async function Page() {
       <Container maxWidth={'xl'}>
         <Grid container spacing={1}>
           {articles.map((article) => (
-            <Grid key={article.slug.join('-')} item xs={12} md={6} lg={4}>
+            <Grid
+              key={article.slug.join('-')}
+              size={{
+                xs: 12,
+                md: 6,
+                lg: 4
+              }}>
               <ArticleCard
                 href={`/news/${article.slug.join('/')}`}
                 article={{

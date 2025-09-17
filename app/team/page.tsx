@@ -29,14 +29,25 @@ export default async function Page() {
     <Box pt={6}>
       <Container maxWidth={'xl'}>
         <Grid container justifyContent={'center'}>
-          <Grid item xs={12} sm={6} lg={5}>
+          <Grid
+            size={{
+              xs: 12,
+              sm: 6,
+              lg: 5
+            }}>
             <LeaderCard {...promoted[0]} />
           </Grid>
         </Grid>
         <Grid container justifyContent={'center'}>
           {promoted.slice(1, 3).map((member) => {
             return (
-              <Grid key={member.name} item xs={12} sm={6} lg={5}>
+              <Grid
+                key={member.name}
+                size={{
+                  xs: 12,
+                  sm: 6,
+                  lg: 5
+                }}>
                 <LeaderCard {...member} />
               </Grid>
             );

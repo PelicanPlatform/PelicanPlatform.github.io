@@ -13,7 +13,12 @@ export default function Page() {
     <Box pt={6}>
       <Container maxWidth={'xl'}>
         <Grid container justifyContent={'Center'}>
-          <Grid item xs={12} md={10} lg={8}>
+          <Grid
+            size={{
+              xs: 12,
+              md: 10,
+              lg: 8
+            }}>
             <Typography variant={'h2'} pb={2}>
               Branding
             </Typography>

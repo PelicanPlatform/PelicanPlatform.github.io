@@ -15,7 +15,13 @@ export default async function Page() {
       <Container maxWidth={'xl'}>
         <Grid container spacing={1}>
           {presentations.map((presentation) => (
-            <Grid key={presentation.slug.join('-')} item xs={12} md={6} lg={4}>
+            <Grid
+              key={presentation.slug.join('-')}
+              size={{
+                xs: 12,
+                md: 6,
+                lg: 4
+              }}>
               <PresentationCard
                 href={`/presentations/${presentation.slug.join('/')}`}
                 presentation={presentation}

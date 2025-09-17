@@ -63,12 +63,12 @@ export default async function Home() {
         <Box sx={{ paddingTop: '4rem', paddingBottom: '10rem' }}>
           <Grid container spacing={2}>
             <Grid
-              item
-              xs={12}
-              lg={7}
-              xl={6}
               sx={{ display: 'flex', flexDirection: 'column' }}
-            >
+              size={{
+                xs: 12,
+                lg: 7,
+                xl: 6
+              }}>
               <Box sx={{ marginTop: 'auto', marginBottom: 'auto' }}>
                 <Typography
                   variant={'h4'}
@@ -109,12 +109,12 @@ export default async function Home() {
               </Box>
             </Grid>
             <Grid
-              item
-              xs={6}
-              lg={5}
-              xl={6}
               sx={{ display: { lg: 'block', xs: 'none' } }}
-            >
+              size={{
+                xs: 6,
+                lg: 5,
+                xl: 6
+              }}>
               <ExportedImage
                 style={{ width: '100%', height: 'auto' }}
                 src={pelicanDiagram}
@@ -132,7 +132,12 @@ export default async function Home() {
             }}
           >
             <Grid container>
-              <Grid item xs={12} lg={10} sx={{ margin: 'auto' }}>
+              <Grid
+                sx={{ margin: 'auto' }}
+                size={{
+                  xs: 12,
+                  lg: 10
+                }}>
                 <Box
                   sx={{
                     position: 'relative',
@@ -155,7 +160,6 @@ export default async function Home() {
           </Box>
         </Box>
       </Container>
-
       <Box
         sx={{
           backgroundColor: '#F5F5F5',
@@ -165,7 +169,11 @@ export default async function Home() {
       >
         <Container maxWidth={'xl'}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid
+              size={{
+                xs: 12,
+                md: 6
+              }}>
               <Box sx={{ borderRadius: '1rem', overflow: 'hidden' }}>
                 <iframe
                   width='100%'
@@ -176,7 +184,12 @@ export default async function Home() {
                 ></iframe>
               </Box>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ display: 'flex' }}>
+            <Grid
+              sx={{ display: 'flex' }}
+              size={{
+                xs: 12,
+                md: 6
+              }}>
               <Box
                 sx={{
                   paddingBottom: '1rem',
@@ -266,14 +279,14 @@ export default async function Home() {
           <Box mt={6}>
             <Grid container spacing={2}>
               <Grid
-                item
-                xs={12}
-                sm={6}
-                md={6}
-                lg={4}
-                xl={4}
                 sx={{ display: { xs: 'none', lg: 'block' } }}
-              >
+                size={{
+                  xs: 12,
+                  sm: 6,
+                  md: 6,
+                  lg: 4,
+                  xl: 4
+                }}>
                 <Typography
                   variant={'h4'}
                   sx={{ paddingBottom: '1.5rem', textAlign: 'center' }}
@@ -304,14 +317,14 @@ export default async function Home() {
                 )}
               </Grid>
               <Grid
-                item
-                xs={12}
-                sm={6}
-                md={6}
-                lg={4}
-                xl={4}
                 sx={{ order: { xs: 2, sm: 1 } }}
-              >
+                size={{
+                  xs: 12,
+                  sm: 6,
+                  md: 6,
+                  lg: 4,
+                  xl: 4
+                }}>
                 <Typography
                   variant={'h4'}
                   sx={{
@@ -340,14 +353,14 @@ export default async function Home() {
                 )}
               </Grid>
               <Grid
-                item
-                xs={12}
-                sm={6}
-                md={6}
-                lg={4}
-                xl={4}
                 sx={{ order: { xs: 1, sm: 2 } }}
-              >
+                size={{
+                  xs: 12,
+                  sm: 6,
+                  md: 6,
+                  lg: 4,
+                  xl: 4
+                }}>
                 <Typography
                   variant={'h4'}
                   sx={{ paddingBottom: '1.5rem', textAlign: 'center' }}

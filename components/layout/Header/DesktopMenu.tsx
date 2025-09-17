@@ -56,7 +56,7 @@ export const DesktopMenu = ({
           {menuItems
             .filter((x) => ('type' in x ? x?.type == 'icon' : false))
             .map((item) => (
-              <Grid key={item.value} item>
+              <Grid key={item.value}>
                 <HeaderIconLink {...(item as HeaderLinkItem)} />
               </Grid>
             ))}

@@ -6,7 +6,12 @@ import { Staff } from '@/utils/staff';
 export function LeaderCard({ name, title, image, institution }: Staff) {
   return (
     <Grid container spacing={2} justifyContent={'center'} mb={2}>
-      <Grid item xs={7} sm={6} md={5}>
+      <Grid
+        size={{
+          xs: 7,
+          sm: 6,
+          md: 5
+        }}>
         <Paper
           sx={{
             padding: 2,
@@ -27,8 +32,7 @@ export function LeaderCard({ name, title, image, institution }: Staff) {
           </Box>
         </Paper>
       </Grid>
-
-      <Grid item sx={{ pl: 1, display: 'flex', flexDirection: 'column' }}>
+      <Grid sx={{ pl: 1, display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ m: 'auto' }}>
           <Typography variant={'h5'} color={'primary.dark'}>
             {name}
