@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@chtc/web-components':
-        specifier: '*'
+        specifier: 0.0.0-51
         version: 0.0.0-51(@emotion/core@0.13.1(react@19.1.1))(@types/react@18.3.24)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@emotion/react':
         specifier: ^11.11.1
