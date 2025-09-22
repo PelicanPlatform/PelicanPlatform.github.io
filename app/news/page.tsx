@@ -31,11 +31,7 @@ export default async function Page() {
               }}>
               <ArticleCard
                 href={`/news/${article.slug.join('/')}`}
-                article={{
-                  image: article.image,
-                  title: article.title,
-                  excerpt: article.excerpt,
-                }}
+                article={article}
               />
             </Grid>
           ))}
