@@ -59,7 +59,7 @@ export const PresentationCard = ({
           </Typography>
 
           <Box display='flex' flexWrap='wrap'>
-            {presentation.tags.map((tag) => (
+            {(presentation?.tags || []).map((tag) => (
               <Tag key={tag} tag={tag} />
             ))}
           </Box>
@@ -109,7 +109,7 @@ export const PresentationDisplay = ({
             </Typography>
           </Box>
           <Box mt={2} display='flex' flexWrap='wrap'>
-            {tags.map((tag) => (
+            {(tags || []).map((tag) => (
               <Tag key={tag} tag={tag} />
             ))}
           </Box>

@@ -40,7 +40,7 @@ export interface Presentation {
     name: string;
     url: string;
   };
-  tags: string[];
+  tags?: string[];
   categories: {
     id: number;
     title: string;
