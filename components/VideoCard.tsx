@@ -1,4 +1,4 @@
-import { Box, Button, GridLegacy, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { TopStyledBlock } from '@chtc/web-components';
 
 interface VideoCardProps {
@@ -22,8 +22,12 @@ const VideoCard = ({
   // On load update the iframes height so the video is 16:9
 
   return (
-    <GridLegacy container>
-      <GridLegacy item xs={12} md={7}>
+    <Grid container>
+      <Grid
+        size={{
+          xs: 12,
+          md: 7
+        }}>
         <iframe
           style={{
             width: '100%',
@@ -38,8 +42,13 @@ const VideoCard = ({
           referrerPolicy='strict-origin-when-cross-origin'
           allowFullScreen
         />
-      </GridLegacy>
-      <GridLegacy item xs={12} md={5} display={'flex'}>
+      </Grid>
+      <Grid
+        display={'flex'}
+        size={{
+          xs: 12,
+          md: 5
+        }}>
         <Box sx={{ m: 2, mt: 5, display: 'flex', flexDirection: 'column' }}>
           <Box>
             <TopStyledBlock>
@@ -56,8 +65,8 @@ const VideoCard = ({
             </Button>
           )}
         </Box>
-      </GridLegacy>
-    </GridLegacy>
+      </Grid>
+    </Grid>
   );
 };
 

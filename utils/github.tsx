@@ -61,7 +61,7 @@ export const getAll = async (apiUrl:string) => {
 
     const res = await fetch(url, {
       headers: {
-        authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        authorization: process.env.GITHUB_TOKEN ? `Bearer ${process.env.GITHUB_TOKEN}` : '',
       },
     });
     if (!res.ok) {

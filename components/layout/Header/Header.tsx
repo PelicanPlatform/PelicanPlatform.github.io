@@ -54,6 +54,11 @@ const MENU_ITEMS: (
     icon: <Terminal />,
     menuItems: [
       {
+        value: 'Download and Install',
+        href: 'https://docs.pelicanplatform.org/install',
+        icon: <FileDownload />,        
+      },
+      {
         value: 'Release Plan',
         href: '/release-plan',
         icon: <CalendarMonth />,
@@ -103,6 +108,13 @@ const MENU_ITEMS: (
     href: '/contact',
     icon: <AlternateEmail />,
     type: 'icon',
+  },
+  {
+    value: 'Download',
+    href: 'https://docs.pelicanplatform.org/install',
+    target: '_blank',
+    icon: <FileDownload />,
+    type: 'icon',   
   },
   {
     value: 'Documentation',
