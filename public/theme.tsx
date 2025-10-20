@@ -2,8 +2,8 @@
 
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material';
 import { FC } from 'react';
-import { blue } from '@mui/material/colors';
 import { Poppins } from 'next/font/google';
+import LinkBehavior from 'next/link';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -55,6 +55,16 @@ let theme = createTheme({
     MuiContainer: {
       defaultProps: {},
     },
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
+      }
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehavior
+      }
+    }
   },
 });
 

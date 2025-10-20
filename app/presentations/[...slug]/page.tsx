@@ -1,11 +1,12 @@
-import { PresentationDisplay } from '@/components/Presentation';
 import { BackendPresentation, getPresentation, getPresentations } from '@/utils/presentations';
+import { Presentation } from '@chtc/web-components';
 import { Box, Container, Typography } from '@mui/material';
 
 export async function generateStaticParams() {
   try {
-    const presentations = await getPresentations();
+    const presentations = await getPresentations('CHTC', 'Presentations', 'main');
 
+    console.log(presentations.map(p => p.slug));
     return presentations.map((presentation) => ({
       slug: presentation.slug,
     }));
@@ -19,7 +20,7 @@ async function getPresentationBySlug(
   slug: string[]
 ): Promise<BackendPresentation | null> {
   try {
-    const presentations = await getPresentations();
+    const presentations = await getPresentations('CHTC', 'Presentations', 'main');
     const matchedPresentation = presentations.find(
       (presentation) => presentation.slug.join('-') === slug.join('-')
     );
@@ -54,7 +55,7 @@ export default async function Page({
   }
 
   return (
-    <PresentationDisplay
+    <Presentation
       {...presentation}
     />
   );
