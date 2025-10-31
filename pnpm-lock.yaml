@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@chtc/web-components':
-        specifier: 1.0.11
-        version: 1.0.11(@types/react@18.3.24)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 1.0.12
+        version: 1.0.12(@types/react@18.3.24)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@emotion/react':
         specifier: ^11.11.1
         version: 11.14.0(@types/react@18.3.24)(react@19.1.1)
@@ -160,8 +160,8 @@ packages:
     resolution: {integrity: sha512-bkFqkLhh3pMBUQQkpVgWDWq/lqzc2678eUyDlTBhRqhCHFguYYGM0Efga7tYk4TogG/3x0EEl66/OQ+WGbWB/Q==}
     engines: {node: '>=6.9.0'}
 
-  '@chtc/web-components@1.0.11':
-    resolution: {integrity: sha512-A7OJAisLh/DOBjCWvRFW5QTYqgdm3SYajDJJ5DSvyqzs7Z7LWTIxGYvJk7sMManvxuxBbqoW4K/CZfSG/1ArlA==}
+  '@chtc/web-components@1.0.12':
+    resolution: {integrity: sha512-oi8ifaC8j+Bqs7KnsjEHRE5aAE9pN735vVPM1m1mu2Do+zV047mSCmtMvuhhA6ZrXPDg7VP4HawZYE5+c21SMw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -2864,7 +2864,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@chtc/web-components@1.0.11(@types/react@18.3.24)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@chtc/web-components@1.0.12(@types/react@18.3.24)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@18.3.24)(react@19.1.1)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@18.3.24)(react@19.1.1))(@types/react@18.3.24)(react@19.1.1)
