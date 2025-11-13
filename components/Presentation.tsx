@@ -30,15 +30,6 @@ export const PresentationCard = ({
           <Typography variant='h6' sx={{ fontWeight: 'bold', marginBottom: 1 }}>
             {presentation.title}
           </Typography>
-          
-          <Typography
-            variant='body2'
-            color='textSecondary'
-            sx={{ marginBottom: 2 }}
-          >
-            Posted on{' '}
-            {new Date(presentation.date).toLocaleDateString()}
-          </Typography>
         </Box>
       </Link>
     </Box>
