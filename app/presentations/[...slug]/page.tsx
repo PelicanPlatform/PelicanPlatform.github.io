@@ -57,6 +57,7 @@ export default async function Page({
   return (
     <Presentation
       {...presentation}
+      description={presentation.description || ''}
     />
   );
 }

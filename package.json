@@ -12,7 +12,7 @@
     "format": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@chtc/web-components": "1.0.12",
+    "@chtc/web-components": "1.0.13",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mdx-js/loader": "^3.0.0",

@@ -3,7 +3,7 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { PresentationCard } from '@/components/Presentation';
 
 export default async function Page() {
-  const presentations = await getPresentations();
+  const presentations = await getPresentations('CHTC', 'Presentations', 'main');
 
   console.log(" presentations", presentations)
   return (
