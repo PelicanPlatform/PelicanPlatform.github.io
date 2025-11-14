@@ -101,3 +101,22 @@ export async function getPresentation(
     path: path,
   };
 }
+
+export function getTagColor(tag: string): string {
+  // Simple hash function to generate a number from the tag string
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) {
+    hash = tag.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  // Generate hue from hash but skip harsh ranges (e.g., avoid 60–140 for green/yellow)
+  let hue = Math.abs(hash) % 360;
+  if (hue >= 60 && hue <= 140) {
+    hue = (hue + 80) % 360;
+  }
+
+  const saturation = 70;
+  const lightness = 40;
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}

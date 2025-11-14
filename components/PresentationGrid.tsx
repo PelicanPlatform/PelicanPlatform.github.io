@@ -16,7 +16,7 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function getAllKeywords(presentations: BackendPresentation[]): string[] {
   const keywords: string[] = [];
@@ -54,11 +54,7 @@ export function PresentationGrid({
   const [eventFilter, setEventFilter] = useState<string>('');
   const [keywordFilter, setKeywordFilter] = useState<string[]>([]);
 
-  // The filtered presentations based on the selected event and keywords
-  const [filteredPresentations, setFilteredPresentations] =
-    useState(presentations);
-  
-  useEffect(() => {
+  const filteredPresentations = useMemo(() => {
     // Rerun filtering when eventFilter or keywordFilter changes
     const newFiltered = presentations.filter((presentation) => {
       const matchesEvent =
@@ -75,7 +71,7 @@ export function PresentationGrid({
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
-    setFilteredPresentations(newFiltered);
+    return newFiltered;
   }, [eventFilter, keywordFilter, presentations]);
 
   const allEvents = getAllEvents(presentations);
@@ -85,7 +81,7 @@ export function PresentationGrid({
     <Box>
       <Box display='flex' flexDirection='row' ml={3} gap={2}>
         {/* Event selector */}
-        <FormControl sx={{ minWidth: '180px' }}>
+        <FormControl sx={{ minWidth: '180px' }} size='small'>
           <InputLabel id='event-select-label'>Event</InputLabel>
           <Select
             labelId='event-select-label'
@@ -103,7 +99,7 @@ export function PresentationGrid({
         </FormControl>
 
         {/* Keyword selector */}
-        <FormControl sx={{ minWidth: '220px' }}>
+        <FormControl sx={{ minWidth: '220px' }} size='small'>
           <InputLabel id='keyword-select-label'>Keywords</InputLabel>
           <Select
             labelId='keyword-select-label'
