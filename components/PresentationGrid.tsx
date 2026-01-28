@@ -156,7 +156,7 @@ export function PresentationGrid({
               size={{ xs: 12, md: 6, lg: 4 }}
             >
               <PresentationCard
-                href={`/presentations/${presentation.slug.join('-')}`}
+                href={`/presentations/${presentation.slug.join('/')}`}
                 presentation={presentation}
                 cardSx={{ width: '100%' }}
                 maxDescriptionHeight={'4.5em'}
