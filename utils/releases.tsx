@@ -18,7 +18,7 @@ export async function fetchAllReleases(
 
   if (excludeReleaseCandidates) {
     releases = releases.filter(
-      (release) => !release.tag_name.match(/^.*rc.*$/)
+      (release) => !release.tag_name.match(/^.*rc.*$/) && !release.prerelease
     );
   }
 
