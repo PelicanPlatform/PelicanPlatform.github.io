@@ -1,4 +1,4 @@
-import { GithubMilestoneData } from '@/utils/github';
+import { GithubMilestoneData, GITHUB_REVALIDATE } from '@/utils/github';
 import {
   Box,
   Container,
@@ -126,7 +126,9 @@ export default async function Page() {
 async function getCurrentMilestone(): Promise<GithubMilestoneData> {
   const apiUrl =
     'https://api.github.com/repos/PelicanPlatform/pelican/milestones?direction=asc';
-  const response = await fetch(apiUrl);
+  const response = await fetch(apiUrl, {
+    next: { revalidate: GITHUB_REVALIDATE },
+  });
   if (!response.ok) throw new Error('Failed to fetch milestones');
 
   let milestones: GithubMilestoneData[] = await response.json();

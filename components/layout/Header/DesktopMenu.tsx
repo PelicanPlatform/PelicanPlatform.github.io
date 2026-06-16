@@ -1,166 +1,155 @@
 'use client';
 
-import React, { useState, ReactNode, useRef, ComponentType } from 'react';
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
-  IconProps,
-} from '@mui/material';
-import Link, { LinkProps } from 'next/link';
-import { Typography } from '@mui/material';
-import { ArrowDropUp, ArrowDropDown } from '@mui/icons-material';
+import * as React from 'react';
+import { Box, Button, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import Link from 'next/link';
+import { ArrowDropDown } from '@mui/icons-material';
 
+import { tokens } from '@/components/ui/Section';
+import { poppinsFontFamily } from '@/public/theme';
 import type { HeaderLinkItem, HeaderMenuProps } from './index.d';
 
-export const DesktopMenu = ({
-  menuItems,
-}: {
-  menuItems: (
-    | Omit<HeaderMenuProps, 'setAnchor' | 'anchorEl'>
-    | HeaderLinkItem
-  )[];
-}) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+type NavItem = Omit<HeaderMenuProps, 'setAnchor' | 'anchorEl'> | HeaderLinkItem;
+
+const navButtonSx = (active: boolean) => ({
+  fontFamily: poppinsFontFamily,
+  textTransform: 'none' as const,
+  fontSize: '1.1rem',
+  fontWeight: 500,
+  color: active ? 'primary.main' : '#42537A',
+  px: 2,
+  py: 0.9,
+  borderRadius: '10px',
+  minWidth: 0,
+  '&:hover': { backgroundColor: '#EEF3FB', color: tokens.ink },
+});
+
+const menuPaperSx = {
+  mt: 1,
+  borderRadius: '12px',
+  border: `1px solid ${tokens.cardLine}`,
+  boxShadow: '0 14px 34px rgba(13,30,80,0.14)',
+  minWidth: 220,
+  '& .MuiList-root': { py: 0.75 },
+};
+
+const menuItemSx = {
+  fontFamily: poppinsFontFamily,
+  py: 1,
+  px: 2,
+  fontSize: '1rem',
+  fontWeight: 500,
+  color: tokens.ink,
+  '&:hover': { backgroundColor: '#F0F4FB' },
+};
+
+/** Centered nav: dropdowns and top-level links rendered as buttons. */
+export const DesktopMenu = ({ menuItems }: { menuItems: NavItem[] }) => {
+  const navItems = menuItems.filter((x) => !('type' in x && x.type === 'icon'));
 
   return (
-    <>
-      <Box display={'flex'} mb={0.5}>
-        {menuItems
-          .filter((x) => ('type' in x ? x?.type != 'icon' : true))
-          .map((item) => (
-            <HeaderItem
-              key={item.value}
-              {...item}
-              anchorEl={anchorEl}
-              setAnchor={(element) => {
-                setAnchorEl((anchorEl) => {
-                  if (element == null) {
-                    return element;
-                  }
-                  if (anchorEl?.id == element.id) {
-                    return null;
-                  }
-                  return element;
-                });
-              }}
-            />
-          ))}
-      </Box>
-      <Box marginLeft={'auto'}>
-        <Grid container spacing={1}>
-          {menuItems
-            .filter((x) => ('type' in x ? x?.type == 'icon' : false))
-            .map((item) => (
-              <Grid key={item.value}>
-                <HeaderIconLink {...(item as HeaderLinkItem)} />
-              </Grid>
-            ))}
-        </Grid>
-      </Box>
-    </>
+    <Box
+      component='nav'
+      sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 0.5 }}
+    >
+      {navItems.map((item) =>
+        'menuItems' in item ? (
+          <NavDropdown key={item.value} item={item} />
+        ) : (
+          <Button
+            key={item.value}
+            component='a'
+            href={item.href as string}
+            target={item.target}
+            sx={navButtonSx(false)}
+          >
+            {item.value}
+          </Button>
+        )
+      )}
+    </Box>
   );
 };
 
-const HeaderItem = ({ ...props }: HeaderMenuProps | HeaderLinkItem) => {
-  if ('menuItems' in props) {
-    return <HeaderMenu {...props} />;
-  } else if (props.type == 'text') {
-    return <HeaderLink {...props} />;
-  } else {
-    return <HeaderIconLink {...props} />;
-  }
-};
-
-const HeaderMenu = ({
-  icon,
-  value,
-  anchorEl,
-  setAnchor,
-  menuItems,
-}: HeaderMenuProps) => {
-  const anchorId = `${value}-button`;
-  const open = anchorEl?.id == anchorId;
-  const anchorRef = useRef<HTMLAnchorElement>(null);
+const NavDropdown = ({
+  item,
+}: {
+  item: Omit<HeaderMenuProps, 'setAnchor' | 'anchorEl'>;
+}) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const close = () => setAnchorEl(null);
 
   return (
     <>
-      <Link
-        href={'#'}
-        style={{ display: 'flex' }}
-        ref={anchorRef}
-        id={anchorId}
-        aria-controls={open ? `${value}-menu` : undefined}
+      <Button
+        onClick={(e) => setAnchorEl(e.currentTarget)}
         aria-haspopup='true'
         aria-expanded={open ? 'true' : undefined}
-        onClick={(e) => setAnchor(anchorRef.current)}
+        endIcon={
+          <ArrowDropDown
+            sx={{
+              transition: 'transform .2s ease',
+              transform: open ? 'rotate(180deg)' : 'none',
+            }}
+          />
+        }
+        sx={navButtonSx(open)}
       >
-        <Typography
-          id={`${value}-header`}
-          display={'flex'}
-          my={'auto'}
-          pl={2}
-          lineHeight={1}
-          variant={'h6'}
-        >
-          <Box display={'inline'} my={'auto'}>
-            {value}
-          </Box>
-          {open ? <ArrowDropUp /> : <ArrowDropDown />}
-        </Typography>
-      </Link>
-      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchor(null)}>
-        {menuItems.map((item) => (
-          <Link key={item.value} {...item}>
-            <MenuItem onClick={(e) => setAnchor(anchorRef.current)}>
-              {item.value}
-            </MenuItem>
-          </Link>
+        {item.value}
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={close}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        slotProps={{ paper: { sx: menuPaperSx } }}
+      >
+        {item.menuItems.map((sub) => (
+          <MenuItem
+            key={sub.value}
+            component={Link}
+            href={sub.href}
+            target={sub.target}
+            onClick={close}
+            sx={menuItemSx}
+          >
+            {sub.value}
+          </MenuItem>
         ))}
       </Menu>
     </>
   );
 };
 
-const HeaderLink = ({ ...props }: HeaderLinkItem) => {
-  return (
-    <Link {...props} style={{ display: 'flex' }}>
-      <Typography my={'auto'} pl={2} lineHeight={1} variant={'h6'}>
-        {props.value}
-      </Typography>
-    </Link>
+/** Right-side icon actions (Contact, Download, Docs, GitHub, …). */
+export const DesktopActions = ({ menuItems }: { menuItems: NavItem[] }) => {
+  const iconItems = menuItems.filter(
+    (x): x is HeaderLinkItem => 'type' in x && x.type === 'icon'
   );
-};
 
-const HeaderIconLink = ({ ...props }: HeaderLinkItem) => {
   return (
-    <Link href={props.href} target={props.target}>
-      <Tooltip title={props.value}>
-        <Box
-          sx={{
-            ':hover': {
-              transform: 'scale(1.15)',
-              transition: 'transform 0.3s',
-            },
-            marginTop: '2px',
-          }}
-        >
-          {React.cloneElement(props.icon, {
-            fontSize: 'large',
-            sx: {
-              ':hover': {
-                transform: 'scale(1.15)',
-                transition: 'transform 0.3s',
-              },
-              marginTop: '2px',
-            },
-          })}
-        </Box>
-      </Tooltip>
-    </Link>
+    <Box
+      sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 0.25 }}
+    >
+      {iconItems.map((item) => (
+        <Tooltip key={item.value} title={item.value}>
+          <IconButton
+            component={Link}
+            href={item.href}
+            target={item.target}
+            aria-label={item.value}
+            sx={{
+              color: '#42537A',
+              borderRadius: '10px',
+              '&:hover': { backgroundColor: '#EEF3FB', color: 'primary.main' },
+            }}
+          >
+            {React.cloneElement(item.icon, { fontSize: 'small' })}
+          </IconButton>
+        </Tooltip>
+      ))}
+    </Box>
   );
 };

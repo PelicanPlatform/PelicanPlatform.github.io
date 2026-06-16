@@ -1,10 +1,9 @@
 'use client';
 
 import ExportedImage from 'next-image-export-optimizer';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
-import styles from '../../../app/page.module.css';
-import Link, { LinkProps } from 'next/link';
+import Link from 'next/link';
 import {
   Home,
   Groups,
@@ -22,7 +21,8 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 
 import PelicanLogo from '../../../public/static/images/PelicanPlatformLogo_Icon.png';
 import { HeaderLinkItem, HeaderMenuProps } from './index.d';
-import { BurgerMenu, DesktopMenu, ImageIcon } from './index';
+import { BurgerMenu, DesktopMenu, DesktopActions, ImageIcon } from './index';
+import { tokens } from '@/components/ui/Section';
 
 const MENU_ITEMS: (
   | Omit<HeaderMenuProps, 'setAnchor' | 'anchorEl'>
@@ -133,44 +133,69 @@ const MENU_ITEMS: (
 ];
 
 export const Header = () => {
-  // Scroll watcher for opacity
-  let [scrolledTop, setScrolledTop] = useState(true);
-  useEffect(() => {
-    setScrolledTop(window.scrollY < 50);
-    addEventListener('scroll', (event) => {
-      setScrolledTop(window.scrollY < 50);
-    });
-  }, []);
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   return (
     <Box
-      className={`${styles.header} ${scrolledTop ? styles.headerScrolled : ''}`}
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '1rem',
-        position: 'fixed',
-        zIndex: '1',
-        width: '100%',
-        overflow: 'hidden',
+      component='header'
+      sx={{
+        position: 'relative',
+        zIndex: 10,
+        backgroundColor: '#ffffff',
+        borderBottom: `1px solid ${tokens.sectionLine}`,
       }}
     >
-      <Box display={'flex'} flexGrow={1}>
-        <Link href={'/'}>
-          <Box style={{ display: 'flex' }}>
-            <ExportedImage src={PelicanLogo} alt={'Pelican Logo'} height={36} />
-            <Typography variant={'h5'} pl={1} my={'auto'}>
+      <Box
+        sx={{
+          maxWidth: 1320,
+          mx: 'auto',
+          px: { xs: 2, md: 4 },
+          py: 1.25,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        {/* Left: logo */}
+        <Box sx={{ flex: 1, display: 'flex', minWidth: 0 }}>
+          <Link
+            href={'/'}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+            }}
+          >
+            <ExportedImage src={PelicanLogo} alt={'Pelican Logo'} height={34} />
+            <Typography
+              variant='h5'
+              sx={{
+                pl: 1,
+                fontWeight: 700,
+                fontSize: '1.2rem',
+                color: tokens.ink,
+                whiteSpace: 'nowrap',
+              }}
+            >
               Pelican Platform
             </Typography>
-          </Box>
-        </Link>
-        <Box sx={{ display: { xs: 'flex', md: 'none' } }} flexGrow={1}>
-          <BurgerMenu menuItems={MENU_ITEMS} />
+          </Link>
         </Box>
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }} flexGrow={1}>
-          <DesktopMenu menuItems={MENU_ITEMS} />
+
+        {/* Center: nav */}
+        <DesktopMenu menuItems={MENU_ITEMS} />
+
+        {/* Right: actions + mobile menu */}
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <DesktopActions menuItems={MENU_ITEMS} />
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <BurgerMenu menuItems={MENU_ITEMS} />
+          </Box>
         </Box>
       </Box>
     </Box>

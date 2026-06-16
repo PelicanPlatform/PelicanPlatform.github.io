@@ -1,19 +1,17 @@
 import {
-  CircularProgress,
-  Container,
-  Typography,
   Box,
-  Divider,
+  Button,
+  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Link,
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import React from 'react';
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import ReleaseBody from '../ReleaseBody';
 import { GitHubReleaseData } from '../../../utils/github';
 import { fetchAllReleases } from '@/utils/releases';
+import { Section, accordionSx, tokens } from '@/components/ui/Section';
 
 interface ReleaseData {
   specificRelease?: GitHubReleaseData;
@@ -62,68 +60,89 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
   const releaseData = await getPageData(slug);
   const { specificRelease, patchReleases } = releaseData;
 
-  if (!releaseData) {
-    return (
-      <Container maxWidth='md'>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '50vh',
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
-  }
   return (
-    <Container maxWidth='md'>
-      <Box pt={6} pb={4}>
-        <Box
-          display='flex'
-          justifyContent='space-between'
-          alignItems='flex-end'
-        >
-          <Typography variant='h2' component='h1'>
-            {slug}
+    <Section tone='light' maxWidth='md' borderTop={false}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 2,
+          mb: 4,
+        }}
+      >
+        <Box>
+          <Typography
+            variant='inherit'
+            sx={{
+              textTransform: 'uppercase',
+              letterSpacing: '0.16em',
+              fontWeight: 600,
+              fontSize: '0.8rem',
+              color: 'primary.main',
+              mb: 1,
+            }}
+          >
+            Release
           </Typography>
-          <Typography variant='h4' component='h2'>
-            <Link href={getDownloadLink(releaseData)} target='_blank'>
-              Download
-            </Link>
+          <Typography variant='h3' sx={{ fontWeight: 700, color: tokens.ink }}>
+            {slug.join('.')}
           </Typography>
         </Box>
-        <Divider
+        <Button
+          component='a'
+          href={getDownloadLink(releaseData)}
+          target='_blank'
+          rel='noopener'
+          variant='contained'
+          startIcon={<DownloadRoundedIcon />}
           sx={{
-            bgcolor: 'primary.main',
-            height: '0.25rem',
+            textTransform: 'none',
+            fontWeight: 600,
+            borderRadius: '12px',
+            px: 3,
+            py: 1.2,
           }}
-        />
+        >
+          Download
+        </Button>
       </Box>
+
       <ReleaseBody content={specificRelease?.body || ''} />
-      <Box pt={4}>
-        <Box pb={4}>
+
+      {patchReleases.length > 0 && (
+        <Box sx={{ mt: 4 }}>
           {patchReleases.map((release: GitHubReleaseData) => (
-            <Accordion key={release.tag_name}>
+            <Accordion
+              key={release.tag_name}
+              disableGutters
+              elevation={0}
+              sx={accordionSx}
+            >
               <AccordionSummary
                 expandIcon={<ArrowDropDownIcon />}
                 aria-controls={`${release.tag_name}-content`}
                 id={`${release.tag_name}-header`}
               >
-                <Typography variant='h5' component='h2'>
+                <Typography
+                  variant='inherit'
+                  component='h2'
+                  sx={{ fontSize: '1.05rem', fontWeight: 600, color: tokens.ink }}
+                >
                   {release.tag_name}
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails sx={{ mx: 3 }}>
+              <AccordionDetails
+                sx={{ borderTop: `1px solid ${tokens.sectionLine}` }}
+              >
                 <ReleaseBody content={release.body} />
               </AccordionDetails>
             </Accordion>
           ))}
         </Box>
-      </Box>
-    </Container>
+      )}
+    </Section>
   );
 };
 

@@ -12,13 +12,20 @@ interface GitTree {
   tree: GitTreeItem[];
 }
 
+// How long (seconds) to keep GitHub responses in Next's local Data Cache
+// (`.next/cache`). Without this, Next 15 treats every fetch as `no-store`, so
+// each render/rebuild re-hits GitHub and quickly exhausts the API rate limit.
+// One hour keeps a typical dev session (and incremental rebuilds) off the wire
+// while still picking up new content reasonably often.
+export const GITHUB_REVALIDATE = 60 * 60;
+
 export async function getTree(
   organization: string,
   repo: string,
   branch: string
 ): Promise<GitTree> {
   const url = `https://api.github.com/repos/${organization}/${repo}/git/trees/${branch}?recursive=1`;
-  const res = await fetch(url);
+  const res = await fetch(url, { next: { revalidate: GITHUB_REVALIDATE } });
   const json = await res.json();
   return json as GitTree;
 }
@@ -42,6 +49,7 @@ export async function getRawFile(
       Accept: 'application/vnd.github.raw',
       authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
     },
+    next: { revalidate: GITHUB_REVALIDATE },
   });
 
   return await res.text();
@@ -63,8 +71,10 @@ export const getAll = async (apiUrl:string) => {
       headers: {
         authorization: process.env.GITHUB_TOKEN ? `Bearer ${process.env.GITHUB_TOKEN}` : '',
       },
+      next: { revalidate: GITHUB_REVALIDATE },
     });
     if (!res.ok) {
+      console.log(await res.text());
       throw new Error(`Failed to fetch: ${res.statusText}`);
     }
     const data = await res.json();

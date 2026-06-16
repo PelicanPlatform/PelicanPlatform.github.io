@@ -8,9 +8,13 @@ import LinkBehavior from 'next/link';
 const poppins = Poppins({
   subsets: ['latin'],
   style: ['normal'],
-  weight: ['300', '400', '600'],
+  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
 });
+
+// Exposed so non-theme components (e.g. the header nav) can match the
+// heading typeface.
+export const poppinsFontFamily = poppins.style.fontFamily;
 
 let theme = createTheme({
   palette: {
@@ -64,7 +68,20 @@ let theme = createTheme({
       defaultProps: {
         LinkComponent: LinkBehavior
       }
-    }
+    },
+    // Don't lock body scroll for popover-style menus — the scroll lock reserves
+    // the scrollbar's width as right-side padding, which shows as a whitespace
+    // gap when a header dropdown opens.
+    MuiMenu: {
+      defaultProps: {
+        disableScrollLock: true,
+      },
+    },
+    MuiPopover: {
+      defaultProps: {
+        disableScrollLock: true,
+      },
+    },
   },
 });
 

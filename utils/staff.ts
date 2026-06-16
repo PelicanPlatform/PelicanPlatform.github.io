@@ -1,4 +1,4 @@
-import { getPaths, getTree } from '@/utils/github';
+import { getPaths, getTree, GITHUB_REVALIDATE } from '@/utils/github';
 import yaml from 'js-yaml';
 
 export async function getStaff(website: Website): Promise<Staff[]> {
@@ -34,7 +34,9 @@ async function fetchStaff(
   file: string,
   website: Website
 ): Promise<Staff> {
-  const res = await fetch(baseURL + file);
+  const res = await fetch(baseURL + file, {
+    next: { revalidate: GITHUB_REVALIDATE },
+  });
 
   if (!res.ok) {
     throw new Error(

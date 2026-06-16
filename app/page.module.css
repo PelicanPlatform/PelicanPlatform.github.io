@@ -1,11 +1,9 @@
 .main {
   min-height: 100vh;
-  margin-top: 68px;
 }
 
 .pages {
   min-height: 100vh;
-  margin-top: 68px;
   box-shadow: 0px 6px 7px #e2e2e2;
   padding-bottom: 3rem;
 }

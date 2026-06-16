@@ -3,13 +3,15 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ReleaseBody from "./ReleaseBody";
 import { GitHubReleaseData } from "@/utils/github";
 import { OrganizedReleasesType } from "@/utils/releases";
+import { accordionSx, tokens } from "@/components/ui/Section";
 
 interface ReleaseSectionProps {
     mainReleaseName: string;
     organizedReleases: OrganizedReleasesType;
+    id?: string;
 }
 
-const ReleaseSection = ({ mainReleaseName, organizedReleases }: ReleaseSectionProps) => {
+const ReleaseSection = ({ mainReleaseName, organizedReleases, id }: ReleaseSectionProps) => {
     const mainReleaseData = organizedReleases[mainReleaseName];
 
     // Combine major and minor releases into a single array
@@ -33,28 +35,41 @@ const ReleaseSection = ({ mainReleaseName, organizedReleases }: ReleaseSectionPr
     );
 
     return (
-        <Box key={mainReleaseName} pb={4}>
-            <Typography variant='h3' component='h2'>
+        <Box key={mainReleaseName} id={id} pb={6} sx={{ scrollMarginTop: '1.5rem' }}>
+            <Typography
+                variant='h4'
+                component='h2'
+                sx={{ fontWeight: 700, color: tokens.ink, mb: 2 }}
+            >
                 {mainReleaseName[0].toUpperCase() + mainReleaseName.slice(1)}
             </Typography>
 
-            <Box pb={4}>
+            <Box pb={3}>
                 <ReleaseBody content={aggregatedBody} />
             </Box>
 
             {allReleases.map(
                 (release: GitHubReleaseData) => (
-                    <Accordion key={release.tag_name}>
+                    <Accordion
+                        key={release.tag_name}
+                        disableGutters
+                        elevation={0}
+                        sx={accordionSx}
+                    >
                         <AccordionSummary
                             expandIcon={<ArrowDropDownIcon />}
                             aria-controls={`${release.tag_name}-content`}
                             id={`${release.tag_name}-header`}
                         >
-                            <Typography variant='h5' component='h2'>
+                            <Typography
+                                variant='inherit'
+                                component='h3'
+                                sx={{ fontSize: '1.05rem', fontWeight: 600, color: tokens.ink }}
+                            >
                                 {release.tag_name}
                             </Typography>
                         </AccordionSummary>
-                        <AccordionDetails>
+                        <AccordionDetails sx={{ borderTop: `1px solid ${tokens.sectionLine}` }}>
                             <ReleaseBody content={release.body} />
                         </AccordionDetails>
                     </Accordion>
