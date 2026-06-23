@@ -18,7 +18,7 @@ import {
 // Per-phase auto-advance timing (ms) and copy, ported from the demo.
 // Step dwell times. The two multi-stage steps (Check caches, Fetch & deliver)
 // run three sub-stages of ~3s + 2s + 5s = 10s; the others stay at 5s.
-const PHASE_DURATIONS = [5000, 5000, 10000, 10000];
+const PHASE_DURATIONS = [4000, 4000, 10000, 16000];
 const STEP_LABELS = ['Request', 'Cache list', 'Check caches', 'Fetch & deliver'];
 const STEP_COLORS = [
   COMPONENT_BY_KEY.director.color,

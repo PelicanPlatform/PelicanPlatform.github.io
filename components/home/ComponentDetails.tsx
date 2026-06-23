@@ -1,6 +1,10 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 
 import { COMPONENT_BY_KEY, ComponentKey } from './pelicanComponents';
+import ArrowRight from '@/components/svg/arrowright';
+
+const ADD_DATA_HREF =
+  'https://docs.pelicanplatform.org/getting-started#adding-your-data-to-an-existing-federation';
 
 // Demo ordering: the two storage services, then the two central services.
 const DETAIL_ORDER: ComponentKey[] = ['origin', 'cache', 'director', 'registry'];
@@ -50,6 +54,8 @@ export default function ComponentDetails() {
                 <Box
                   sx={{
                     height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
                     backgroundColor: '#ffffff',
                     border: '1px solid #E4ECF8',
                     borderRadius: '18px',
@@ -98,6 +104,36 @@ export default function ComponentDetails() {
                   >
                     {c.long}
                   </Typography>
+                  {key === 'origin' && (
+                    <Box
+                      component='a'
+                      href={ADD_DATA_HREF}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      sx={{
+                        mt: 'auto',
+                        pt: 3,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 0.75,
+                        alignSelf: 'flex-start',
+                        textDecoration: 'none',
+                        fontSize: '0.95rem',
+                        fontWeight: 600,
+                        color: c.color,
+                        '&:hover .add-data-arrow': { transform: 'translateX(0.3em)' },
+                      }}
+                    >
+                      Connect my data to OSDF
+                      <ArrowRight
+                        className='add-data-arrow'
+                        height={14}
+                        width={20}
+                        fill={'currentColor'}
+                        style={{ transition: 'transform .18s ease' }}
+                      />
+                    </Box>
+                  )}
                 </Box>
               </Grid>
             );

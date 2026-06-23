@@ -8,6 +8,8 @@ import { Box } from '@mui/material';
 
 import { OsdfServer } from '@/utils/osdfCaches';
 import { COMPONENT_BY_KEY, ComponentKey } from './pelicanComponents';
+import {Simulate} from "react-dom/test-utils";
+import pause = Simulate.pause;
 
 const MAPBOX_TOKEN =
   process.env.NEXT_PUBLIC_MAPBOX_TOKEN ||
@@ -20,6 +22,11 @@ const COL = {
   director: COMPONENT_BY_KEY.director.color,
   client: '#0A1652',
 } as const;
+
+const COMMON_PAUSE_SECONDS = .5
+const COMMON_PAUSE = `${COMMON_PAUSE_SECONDS}s`
+const COMMON_DURATION_SECONDS = 3;
+const COMMON_DURATION = `${COMMON_DURATION_SECONDS}s`
 
 // Status colors for the "check caches" step: a down cache, then a live one.
 const DOWN = '#E04A3F';
@@ -125,10 +132,10 @@ export default function FlowMap({ caches, origins, phase, highlight }: FlowMapPr
   React.useEffect(() => {
     setSeq(0);
     if (phase !== 2 && phase !== 3) return;
-    const t1 = setTimeout(() => setSeq(1), 4000);
-    const t2 = setTimeout(() => setSeq(2), 8000);
+    const t1 = setTimeout(() => setSeq(1), getSequenceDuration(1, COMMON_DURATION_SECONDS, COMMON_PAUSE_SECONDS));
+    const t2 = setTimeout(() => setSeq(2), getSequenceDuration(2, COMMON_DURATION_SECONDS, COMMON_PAUSE_SECONDS));
     if (phase !== 3 ) return;
-    const t3 = setTimeout(() => setSeq(3), 12000);
+    const t3 = setTimeout(() => setSeq(3), getSequenceDuration(3, COMMON_DURATION_SECONDS, COMMON_PAUSE_SECONDS));
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -238,12 +245,14 @@ function MotionPacket({
   color,
   r = 4,
   once = false,
+  pause = COMMON_PAUSE
 }: {
   path: string;
   dur: string;
   color: string;
   r?: number;
   once?: boolean;
+  pause?: string;
 }) {
   return (
     <circle
@@ -255,7 +264,7 @@ function MotionPacket({
         offsetPath: `path("${path}")`,
         offsetRotate: '0deg',
         opacity: 0,
-        animation: `packetmove ${dur} linear 1s ${once ? '1 both' : 'infinite backwards'}`,
+        animation: `packetmove ${dur} linear ${pause} ${once ? '1 both' : 'infinite backwards'}`,
       }}
     />
   );
@@ -269,6 +278,7 @@ function Beam({
   dur = '2.4s',
   once = false,
   k,
+  pause = '.5s'
 }: {
   from: Pt;
   to: Pt;
@@ -279,6 +289,7 @@ function Beam({
   // so it reads as one request rather than a repeating stream.
   once?: boolean;
   k: string;
+  pause?: string
 }) {
   return (
     <g key={k}>
@@ -297,6 +308,7 @@ function Beam({
         dur={dur}
         color={packetColor ?? color}
         once={once}
+        pause={pause}
       />
     </g>
   );
@@ -383,7 +395,7 @@ function FlowLayers({
 
   if (phase === 0) {
     // Request: a single packet travels Client → Director.
-    els.push(<Beam k='b0' from={client} to={director} color={COL.director} once />);
+    els.push(<Beam k='b0' from={client} to={director} color={COL.director} dur={COMMON_DURATION} once />);
     els.push(<Node k='d0' p={director} r={7.5} fill={COL.director} ring />);
     els.push(<Label k='ld0' p={director} text='Director' dy={-14} />);
   } else if (phase === 1) {
@@ -393,7 +405,7 @@ function FlowLayers({
     els.push(<Label k='cl-b-lbl' p={cacheDown} text='Cache' dy={-13} />);
     els.push(<Node k='cl-b' p={serving} r={7} fill={COL.cache} ring />);
     els.push(<Label k='cl-b-lbl' p={serving} text='Cache' dy={-13} />);
-    els.push(<Beam k='b1' from={director} to={client} color={COL.director} once />);
+    els.push(<Beam k='b1' from={director} to={client} color={COL.director} dur={COMMON_DURATION} once />);
     els.push(<Node k='d1' p={director} r={7.5} fill={COL.director} ring />);
     els.push(<Label k='ld1' p={director} text='Director' dy={-14} />);
   } else if (phase === 2) {
@@ -401,17 +413,17 @@ function FlowLayers({
     // (1) the request travels on to the next cache — just the dot, no lines;
     // (2) the live cache connects and serves.
     if (seq === 0) {
-      els.push(<Beam k='q1' from={client} to={cacheDown} color={DOWN} once dur='1.6s' />);
+      els.push(<Beam k='q1' from={client} to={cacheDown} color={DOWN} once  dur={COMMON_DURATION} />);
       els.push(<Node k='cd0' p={cacheDown} r={7.5} fill={DOWN} />);
       els.push(<Label k='lcd0' p={cacheDown} text='Cache · Down' dy={-14} />);
     } else if (seq === 1) {
       els.push(<Node k='cd2' p={cacheDown} r={6} fill={DOWN} opacity={0.5} />);
-      els.push(<Beam k='q2' from={client} to={serving} color={UP} dur='1.6s' once />);
+      els.push(<Beam k='q2' from={client} to={serving} color={UP}  dur={COMMON_DURATION} pause={'0s'} once />);
       els.push(<Node k='cu2' p={serving} r={7.5} fill={UP} />);
       els.push(<Label k='lcu2' p={serving} text='Cache · Live' dy={-14} />);
     } else {
       els.push(<Node k='cd3' p={cacheDown} r={6} fill={DOWN} opacity={0.5} />);
-      els.push(<Beam k='q3' from={serving} to={client} color={UP} dur='1.6s' once />);
+      els.push(<Beam k='q3' from={serving} to={client} color={UP}  dur={COMMON_DURATION} pause={'0s'} once />);
       els.push(<Node k='cu3' p={serving} r={7.5} fill={UP} />);
       els.push(<Label k='lcu3' p={serving} text='Cache · Live' dy={-14} />);
     }
@@ -419,23 +431,23 @@ function FlowLayers({
     if(origin == null) return;
 
     if (seq === 0) {
-      els.push(<Beam from={client} to={serving} color={UP} k={'miss'} once/>)
+      els.push(<Beam from={client} to={serving} color={UP} k={'miss'}  dur={COMMON_DURATION} once/>)
       els.push(<Node k='s3' p={serving} r={7} fill={WARNING}/>);
       els.push(<Label k='cache-label' p={serving} text='Cache' dy={-14}/>);
     } else if (seq === 1) {
-      els.push(<Beam from={serving} to={origin} color={UP} k={'to-origin'} once/>)
+      els.push(<Beam from={serving} to={origin} color={UP} k={'to-origin'}  dur={COMMON_DURATION} pause={'0s'} once/>)
       els.push(<Node k='requesting-cache' p={serving} r={7} fill={WARNING}/>);
       els.push(<Label k='cache-label' p={serving} text='Cache' dy={-14}/>);
       els.push(<Node k='origin' p={origin} r={7} fill={UP}/>);
       els.push(<Label k='origin-label' p={origin} text='Origin' dy={-14}/>);
     } else if (seq === 2) {
-      els.push(<Beam from={origin} to={serving} color={UP} k={'miss'} once/>)
+      els.push(<Beam from={origin} to={serving} color={UP} k={'miss'}  dur={COMMON_DURATION} pause={'0s'} once/>)
       els.push(<Node k='requesting-cache' p={serving} r={7} fill={WARNING}/>);
       els.push(<Label k='cache-label' p={serving} text='Cache' dy={-14}/>);
       els.push(<Node k='origin' p={origin} r={7} fill={UP}/>);
       els.push(<Label k='origin-label' p={origin} text='Origin' dy={-14}/>);
     } else {
-      els.push(<Beam from={serving} to={client} color={UP} k={'response'}/>)
+      els.push(<Beam from={serving} to={client} color={UP} k={'response'} dur={COMMON_DURATION} pause={'0s'}/>)
       els.push(<Node k='requesting-cache' p={serving} r={7} fill={UP}/>);
       els.push(<Node k='origin' p={origin} r={7} fill={"#000000"}/>);
       els.push(<Label k='cache-label' p={serving} text='Cache' dy={-14}/>);
@@ -457,4 +469,14 @@ function FlowLayers({
   els.push(<Label k='lclient' p={client} text='Client' dy={20} />);
 
   return <>{els}</>;
+}
+
+/**
+ * Returns the sequence duration seconds converted to ms for timeouts
+ * @param sequenceStep
+ * @param durationSeconds
+ * @param pauseSeconds
+ */
+function getSequenceDuration(sequenceStep: number, durationSeconds: number, pauseSeconds: number) {
+  return (1000 * sequenceStep * durationSeconds) + (pauseSeconds * 1000);
 }
