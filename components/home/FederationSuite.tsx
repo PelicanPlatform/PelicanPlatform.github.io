@@ -130,7 +130,7 @@ export default function FederationSuite({ caches, origins }: FederationSuiteProp
             Four components, one federation.
           </Typography>
           <Typography variant='h6' sx={{ fontWeight: 400, color: 'text.secondary' }}>
-            Watch a request travel the{' '}
+            Watch a request travel the OSG operated Pelican federation the{' '}
             <Link
               href='https://osg-htc.org/services/osdf'
               target='_blank'
@@ -138,9 +138,9 @@ export default function FederationSuite({ caches, origins }: FederationSuiteProp
               underline='hover'
               sx={{ color: 'primary.main', fontWeight: 600 }}
             >
-              Open Science Data Federation
+              OSDF
             </Link>{' '}
-            — or pick a component to see its location in the federation.
+            — or pick a component to see its location in the OSDF.
           </Typography>
         </Box>
 
