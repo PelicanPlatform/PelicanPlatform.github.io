@@ -64,22 +64,6 @@ export default async function Home() {
         }}
       >
         <Container maxWidth='md' disableGutters>
-          <Box
-            sx={{
-              display: 'inline-block',
-              fontSize: '0.78rem',
-              letterSpacing: '0.18em',
-              fontWeight: 600,
-              color: 'primary.main',
-              backgroundColor: '#E7EEFC',
-              px: 1.75,
-              py: 0.85,
-              borderRadius: '999px',
-              mb: 3.5,
-            }}
-          >
-            OPEN · FEDERATED · NATIONAL SCALE
-          </Box>
           <Typography
             variant='h2'
             sx={{

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Box, ButtonBase, Container, IconButton, Typography } from '@mui/material';
+import { Box, ButtonBase, Container, IconButton, Link, Typography } from '@mui/material';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 
@@ -130,8 +130,17 @@ export default function FederationSuite({ caches, origins }: FederationSuiteProp
             Four components, one federation.
           </Typography>
           <Typography variant='h6' sx={{ fontWeight: 400, color: 'text.secondary' }}>
-            Watch a request travel the federation — or pick a component to see the
-            part it plays.
+            Watch a request travel the{' '}
+            <Link
+              href='https://osg-htc.org/services/osdf'
+              target='_blank'
+              rel='noopener noreferrer'
+              underline='hover'
+              sx={{ color: 'primary.main', fontWeight: 600 }}
+            >
+              Open Science Data Federation
+            </Link>{' '}
+            — or pick a component to see its location in the federation.
           </Typography>
         </Box>
 

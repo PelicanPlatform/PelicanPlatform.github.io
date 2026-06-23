@@ -8,8 +8,6 @@ import { Box } from '@mui/material';
 
 import { OsdfServer } from '@/utils/osdfCaches';
 import { COMPONENT_BY_KEY, ComponentKey } from './pelicanComponents';
-import {Simulate} from "react-dom/test-utils";
-import pause = Simulate.pause;
 
 const MAPBOX_TOKEN =
   process.env.NEXT_PUBLIC_MAPBOX_TOKEN ||
@@ -193,6 +191,13 @@ export default function FlowMap({ caches, origins, phase, highlight }: FlowMapPr
           '12%': { opacity: 1 },
           '100%': { offsetDistance: '100%', opacity: 1 },
         },
+        // Fleet view: fade the whole layer in when a component card is selected.
+        '@keyframes fleetin': { from: { opacity: 0 }, to: { opacity: 1 } },
+        // Soft breathing halo behind a single highlighted central node.
+        '@keyframes halopulse': {
+          '0%, 100%': { opacity: 0.3 },
+          '50%': { opacity: 0.08 },
+        },
         '& .mapboxgl-ctrl-logo, & .mapboxgl-ctrl-attrib': { opacity: 0.6 },
       }}
     >
@@ -374,7 +379,13 @@ function FlowLayers({
   seq: number;
   highlight: ComponentKey | null;
 }) {
-  const { client, director, registry, cacheDown, serving, origin } = proj;
+  // When a component card is selected, drop the request animation entirely and
+  // instead map out where that component actually lives in the federation.
+  if (highlight) {
+    return <FleetView proj={proj} highlight={highlight} />;
+  }
+
+  const { client, director, cacheDown, serving, origin } = proj;
   const els: React.ReactNode[] = [];
 
   // Faint context: the whole live federation behind the request.
@@ -455,13 +466,6 @@ function FlowLayers({
     }
   }
 
-  // Registry only enters when the user focuses its card — it underpins trust
-  // from the central services but never sits in the data path.
-  if (highlight === 'registry') {
-    els.push(<Node k='reg' p={registry} r={8} fill={COL.registry} ring />);
-    els.push(<Label k='lreg' p={registry} text='Registry' dy={-15} />);
-  }
-
   // The client is always present.
   els.push(
     <circle key='client' cx={client.x} cy={client.y} r={6.5} fill={COL.client} />
@@ -469,6 +473,88 @@ function FlowLayers({
   els.push(<Label k='lclient' p={client} text='Client' dy={20} />);
 
   return <>{els}</>;
+}
+
+// When a card is selected we stop animating a single request and instead show
+// where that component lives across the federation: every Cache / Origin for
+// the storage services, or the single central node for the Director / Registry.
+function FleetView({
+  proj,
+  highlight,
+}: {
+  proj: ProjNodes;
+  highlight: ComponentKey;
+}) {
+  // Storage services: scatter every real server of the selected type, with the
+  // other type dimmed behind for geographic context.
+  if (highlight === 'cache' || highlight === 'origin') {
+    const isCache = highlight === 'cache';
+    const fleet = isCache ? proj.contextCache : proj.contextOrigin;
+    const others = isCache ? proj.contextOrigin : proj.contextCache;
+    const color = isCache ? COL.cache : COL.origin;
+    const otherColor = isCache ? COL.origin : COL.cache;
+    return (
+      <>
+        <g opacity={0.12}>
+          {others.map((d, i) => (
+            <circle key={i} cx={d.x} cy={d.y} r={3} fill={otherColor} />
+          ))}
+        </g>
+        <g style={{ animation: 'fleetin .45s ease both' }}>
+          {fleet.map((d, i) => (
+            <g key={i}>
+              {/* Breathing halo — same glow as the central Director/Registry node. */}
+              <circle
+                cx={d.x}
+                cy={d.y}
+                r={10}
+                fill={color}
+                style={{ animation: 'halopulse 2.2s ease-in-out infinite' }}
+              />
+              <circle
+                cx={d.x}
+                cy={d.y}
+                r={4.5}
+                fill={color}
+                stroke='#ffffff'
+                strokeWidth={1}
+              />
+            </g>
+          ))}
+        </g>
+      </>
+    );
+  }
+
+  // Central services: the whole federation faint, with the single Director /
+  // Registry node in Madison lit up and labeled.
+  const isDirector = highlight === 'director';
+  const p = isDirector ? proj.director : proj.registry;
+  const color = isDirector ? COL.director : COL.registry;
+  const name = isDirector ? 'Director' : 'Registry';
+  return (
+    <>
+      <g opacity={0.14}>
+        {proj.contextCache.map((d, i) => (
+          <circle key={`c${i}`} cx={d.x} cy={d.y} r={3} fill={COL.cache} />
+        ))}
+        {proj.contextOrigin.map((d, i) => (
+          <circle key={`o${i}`} cx={d.x} cy={d.y} r={3} fill={COL.origin} />
+        ))}
+      </g>
+      <g style={{ animation: 'fleetin .45s ease both' }}>
+        <circle
+          cx={p.x}
+          cy={p.y}
+          r={18}
+          fill={color}
+          style={{ animation: 'halopulse 2.2s ease-in-out infinite' }}
+        />
+        <circle cx={p.x} cy={p.y} r={8} fill={color} />
+        <Label k='fleet-central' p={p} text={name} dy={-16} />
+      </g>
+    </>
+  );
 }
 
 /**
