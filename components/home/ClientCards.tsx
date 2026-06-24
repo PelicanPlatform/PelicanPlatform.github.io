@@ -69,10 +69,12 @@ export default function ClientCards() {
   return (
     <Box
       component='section'
+      id='clients'
       sx={{
         backgroundColor: '#F7FAFE',
         borderTop: '1px solid #EAF1FB',
         py: { xs: 6, md: 10 },
+        scrollMarginTop: { xs: '64px', lg: '1rem' },
       }}
     >
       <Container maxWidth='lg'>

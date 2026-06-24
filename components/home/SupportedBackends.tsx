@@ -61,7 +61,7 @@ const BACKENDS: Backend[] = [
 
 export default function SupportedBackends() {
   return (
-    <Section tone='light'>
+    <Section id='backends' tone='light' sx={{ scrollMarginTop: { xs: '64px', lg: '1rem' } }}>
       <SectionHeading
         eyebrow='Supported Backends'
         title='Connect your existing data repository'

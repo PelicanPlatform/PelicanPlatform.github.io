@@ -3,7 +3,7 @@
 name: Deploy Next.js site to Pages
 
 on:
-  # Run every night
+  # Run three times a day (06:00, 12:00, 18:00 UTC) to pick up content changes
   schedule:
     - cron: '0 6,12,18 * * *'
 
@@ -45,12 +45,29 @@ jobs:
         with:
           version: 10
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          # Re-use the compiler cache when only source changes; bust it when deps change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+      - name: Cache optimized images
+        uses: actions/cache@v4
+        with:
+          # The optimizer skips images whose generated WebP/blur files already exist.
+          path: |
+            public/**/nextImageExportOptimizer
+          key: ${{ runner.os }}-nextimages-${{ hashFiles('public/static/images/**') }}
+          restore-keys: |
+            ${{ runner.os }}-nextimages-
       - name: Build with Next.js
         run: |
           pnpm run export

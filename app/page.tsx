@@ -6,6 +6,7 @@ import FederationSuite from '@/components/home/FederationSuite';
 import ComponentDetails from '@/components/home/ComponentDetails';
 import ClientCards from '@/components/home/ClientCards';
 import SupportedBackends from '@/components/home/SupportedBackends';
+import HomeTableOfContents from '@/components/home/HomeTableOfContents';
 import { getOsdfFederation } from '@/utils/osdfCaches';
 import { Section, SectionHeading, tokens } from '@/components/ui/Section';
 
@@ -28,6 +29,7 @@ export default async function Home() {
 
   return (
     <Box>
+      <HomeTableOfContents />
       <Box>
         {Date.now() < Date.parse('2024-08-15') && (
           <Container
@@ -140,11 +142,11 @@ export default async function Home() {
           </Box>
         </Container>
       </Box>
-      <FederationSuite caches={caches} origins={origins} />
       <ClientCards />
+      <FederationSuite caches={caches} origins={origins} />
       <SupportedBackends />
       <ComponentDetails />
-      <Section tone='white'>
+      <Section id='community' tone='white' sx={{ scrollMarginTop: { xs: '64px', lg: '1rem' } }}>
         <SectionHeading
           eyebrow='From the Community'
           title='Stories, news, and releases'

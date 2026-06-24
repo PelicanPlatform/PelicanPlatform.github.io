@@ -13,10 +13,12 @@ export default function ComponentDetails() {
   return (
     <Box
       component='section'
+      id='components'
       sx={{
         backgroundColor: '#ffffff',
         borderTop: '1px solid #EAF1FB',
         py: { xs: 6, md: 10 },
+        scrollMarginTop: { xs: '64px', lg: '1rem' },
       }}
     >
       <Container maxWidth='lg'>

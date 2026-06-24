@@ -107,7 +107,7 @@ export default function FederationSuite({ caches, origins }: FederationSuiteProp
         backgroundColor: '#F7FAFE',
         borderTop: '1px solid #EAF1FB',
         py: { xs: 6, md: 10 },
-        scrollMarginTop: '1rem',
+        scrollMarginTop: { xs: '64px', lg: '1rem' },
       }}
     >
       <Container maxWidth='xl'>
