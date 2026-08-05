@@ -90,25 +90,27 @@ export async function getPresentation(
   branch: string
 ): Promise<BackendPresentation> {
   const text = await getRawFile(organization, repo, path, branch);
-  const frontMatter = matter(text);
+  const data = matter(text).data ?? {};
 
+  // `?? undefined` collapses YAML nulls (a key written with no value) so the
+  // components' default parameters kick in instead of receiving null.
   return {
-    title: frontMatter.data.title,
-    presenter: frontMatter.data.presenter,
-    event: frontMatter.data.event,
-    date: frontMatter.data.date,
-    publish_on: frontMatter.data.publish_on,
-    published: frontMatter.data.published,
-    description: frontMatter.data.description,
-    keywords: frontMatter.data.keywords,
-    links: frontMatter.data.links,
-    thumbnail: frontMatter.data.image
+    title: data.title ?? '',
+    presenter: data.presenter ?? '',
+    event: data.event ?? undefined,
+    date: data.date ?? '',
+    publish_on: asArray<Website>(data.publish_on),
+    published: data.published ?? undefined,
+    description: data.description ?? undefined,
+    keywords: asArray<string>(data.keywords),
+    links: asArray<{ name: string; value: string }>(data.links),
+    thumbnail: data.image?.path
       ? {
-          src: frontMatter.data.image.path,
-          alt: frontMatter.data.image.alt,
+          src: data.image.path,
+          alt: data.image.alt ?? '',
         }
       : undefined,
-    youtubeId: frontMatter.data.youtube_video_id,
+    youtubeId: data.youtube_video_id ?? undefined,
     slug: getSlug(path),
     path: path,
   };
