@@ -8,7 +8,7 @@ export interface Presentation {
   presenter: string;
   event?: string;
   date: string;
-  publish_on: Website[];
+  publish_on?: Website[];
   published?: boolean;
   description?: string;
   keywords?: string[];
@@ -49,7 +49,7 @@ function isPresentation(path: string) {
 
 function filterVisiblePresentations(presentation: BackendPresentation) {
   const isPublished = presentation.published ?? true;
-  const isOnPelican = presentation.publish_on.includes('pelican');
+  const isOnPelican = presentation.publish_on?.includes('pelican');
   return isPublished && isOnPelican;
 }
 
