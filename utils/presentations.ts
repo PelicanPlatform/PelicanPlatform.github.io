@@ -3,6 +3,9 @@ import { getPaths, getRawFile, getTree } from './github';
 
 type Website = 'htcondor' | 'path' | 'osg' | 'chtc' | 'pelican';
 
+// Every field is optional in the source markdown, so nothing below may assume a
+// key is present. A single presentation with missing front matter used to throw
+// and take the whole static export (and therefore the deploy) down with it.
 export interface Presentation {
   title: string;
   presenter: string;
@@ -47,9 +50,18 @@ function isPresentation(path: string) {
   return path.search(regex) !== -1;
 }
 
+// A front matter list may be absent, null, or a bare scalar; normalize to an
+// array so callers can iterate or search it without guarding first.
+function asArray<T>(value: T | T[] | null | undefined): T[] {
+  if (value === null || value === undefined) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+}
+
 function filterVisiblePresentations(presentation: BackendPresentation) {
   const isPublished = presentation.published ?? true;
-  const isOnPelican = presentation.publish_on?.includes('pelican');
+  const isOnPelican = asArray(presentation.publish_on).includes('pelican');
   return isPublished && isOnPelican;
 }
 
