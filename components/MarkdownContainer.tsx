@@ -41,7 +41,7 @@ const MarkdownContainer = ({ content }: { content: string }) => {
           <Typography variant='caption'>{children}</Typography>
         ),
         p: ({ node, children }) => (
-          <Typography variant='body1' paragraph>
+          <Typography variant='body1' component={"p"}>
             {children}
           </Typography>
         ),
