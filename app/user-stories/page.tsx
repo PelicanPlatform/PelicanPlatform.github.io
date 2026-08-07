@@ -4,6 +4,7 @@ import { getArticles, filterArticles } from '@/utils/articles';
 
 async function getUserStories() {
   const articles = await getArticles('CHTC', 'Articles', 'main');
+  console.log(articles.length)
   return filterArticles(articles, 'pelican', 'user');
 }
 

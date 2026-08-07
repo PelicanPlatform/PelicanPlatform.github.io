@@ -7,6 +7,7 @@ import ComponentDetails from '@/components/home/ComponentDetails';
 import ClientCards from '@/components/home/ClientCards';
 import SupportedBackends from '@/components/home/SupportedBackends';
 import HomeTableOfContents from '@/components/home/HomeTableOfContents';
+import SecurityBanner from '@/components/home/SecurityBanner';
 import { getOsdfFederation } from '@/utils/osdfCaches';
 import { Section, SectionHeading, tokens } from '@/components/ui/Section';
 
@@ -30,6 +31,7 @@ export default async function Home() {
   return (
     <Box>
       <HomeTableOfContents />
+      <SecurityBanner />
       <Box>
         {Date.now() < Date.parse('2024-08-15') && (
           <Container

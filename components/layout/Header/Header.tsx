@@ -16,6 +16,7 @@ import {
   FileDownload,
   Description,
   AlternateEmail,
+  Security,
 } from '@mui/icons-material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
@@ -67,6 +68,11 @@ const MENU_ITEMS: (
         value: 'Releases',
         href: '/releases',
         icon: <FileDownload />,
+      },
+      {
+        value: 'Security Advisories',
+        href: '/security',
+        icon: <Security />,
       },
       {
         value: 'Documentation',

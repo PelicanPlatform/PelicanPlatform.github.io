@@ -55,6 +55,9 @@ const Footer = () => {
               <MuiLink href={'/contact'} underline='hover' color='inherit'>
                 Contact Us
               </MuiLink>
+              <MuiLink href={'/security'} underline='hover' color='inherit'>
+                Security
+              </MuiLink>
               <MuiLink
                 href={'https://docs.pelicanplatform.org/'}
                 underline='hover'
