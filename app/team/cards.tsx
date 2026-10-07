@@ -24,6 +24,7 @@ export function LeaderCard({ name, title, image, institution }: Staff) {
               src={image}
               alt={name}
               fill={true}
+              sizes='(max-width: 600px) 58vw, (max-width: 900px) 25vw, 270px'
               style={{
                 borderRadius: '1rem',
                 objectFit: 'cover',

@@ -2,6 +2,7 @@ import { Box, Container, Grid, Typography, Divider } from '@mui/material';
 import { LeaderCard, StaffCard } from './cards';
 import React from 'react';
 import { getStaff } from '@chtc/web-components';
+import { recordStaffImages } from '@/utils/staffImages';
 
 export default async function Page() {
   const team = await getStaff('pelican');
@@ -24,6 +25,11 @@ export default async function Page() {
     (member) =>
       member.organizations.includes('pelican') && member.status === 'Past'
   );
+
+  // `staff` and `pastStaff` together are everyone this page renders, and
+  // `promoted` is a subset of `staff`. The image optimizer reads this list
+  // after the build to work out which remote portraits to fetch.
+  await recordStaffImages([...staff, ...pastStaff]);
 
   return (
     <Box pt={6}>

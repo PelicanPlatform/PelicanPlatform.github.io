@@ -73,10 +73,18 @@ jobs:
       - name: Cache optimized images
         uses: actions/cache@v4
         with:
-          # The optimizer skips images whose generated WebP/blur files already exist.
+          # The optimizer skips images whose generated files already exist, so
+          # the key has to cover more than the source images:
+          #   - next.config.js sets the widths to generate, so a restored cache
+          #     would otherwise keep serving variants at the old widths.
+          #   - remoteOptimizedImages.js decides which remote headshots are
+          #     fetched at all.
+          # `remoteImagesForOptimization` is the download cache for those
+          # headshots; without it every build re-downloads all 33.
           path: |
             public/**/nextImageExportOptimizer
-          key: ${{ runner.os }}-nextimages-${{ hashFiles('public/static/images/**') }}
+            remoteImagesForOptimization
+          key: ${{ runner.os }}-nextimages-${{ hashFiles('public/static/images/**', 'next.config.js', 'remoteOptimizedImages.js') }}
           restore-keys: |
             ${{ runner.os }}-nextimages-
       - name: Build with Next.js

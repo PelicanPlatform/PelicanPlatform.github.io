@@ -36,3 +36,14 @@ next-env.d.ts
 
 # env
 .env
+
+# remote images downloaded at build time by next-image-export-optimizer
+/remoteImagesForOptimization
+
+# staff portrait urls handed from the build to the image optimizer
+/.staff-images.json
+*/nextImageExportOptimizer
+*/next-image-export-optimizer-hashes.json
+
+# Intellij
+.idea
