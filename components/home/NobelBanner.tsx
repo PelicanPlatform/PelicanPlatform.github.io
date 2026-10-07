@@ -21,29 +21,24 @@ const CONFETTI_COLORS = [
   'rgb(144 190 109 / 0.62)',
   'rgb(67 170 139 / 0.44)',
   'rgb(87 117 144 / 0.53)',
-  'rgb(181 23 158 / 0.54)',
-  tokens.ink,
+  'rgb(181 23 158 / 0.54)'
 ];
 
 type Piece = {
+  /** Position as a fraction of the canvas, so a resize rescales rather than reshuffles. */
   x: number;
   y: number;
   w: number;
   h: number;
   color: string;
-  vy: number;
-  vx: number;
   angle: number;
-  spin: number;
-  wobble: number;
-  wobbleSpeed: number;
+  /** Horizontal squash, faking a flat piece of paper caught mid-tumble. */
+  squash: number;
 };
 
 /**
- * Animated confetti rendered on a canvas that fills the banner. Pieces drift
- * down and wrap back to the top, so the celebration keeps going for as long as
- * the banner is on screen. Visitors who prefer reduced motion get a single
- * static frame instead.
+ * A static scatter of confetti rendered on a canvas that fills the banner.
+ * Pieces are laid out once and only redrawn when the canvas changes size.
  */
 function Confetti() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -54,97 +49,56 @@ function Confetti() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const reduceMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-
-    let width = 0;
-    let height = 0;
     let pieces: Piece[] = [];
-    let frame = 0;
 
-    const makePiece = (fromTop: boolean): Piece => {
+    const makePiece = (): Piece => {
       const size = 5 + Math.random() * 5;
       return {
-        x: Math.random() * width,
-        y: fromTop ? -size : Math.random() * height,
+        x: Math.random(),
+        y: Math.random(),
         w: size,
         h: size * (0.4 + Math.random() * 0.5),
         color:
           CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-        vy: 0.3 + Math.random() * 0.6,
-        vx: -0.2 + Math.random() * 0.4,
         angle: Math.random() * Math.PI * 2,
-        spin: -0.06 + Math.random() * 0.12,
-        wobble: Math.random() * Math.PI * 2,
-        wobbleSpeed: 0.02 + Math.random() * 0.04,
+        // Floored so a piece frozen edge-on is still a visible sliver.
+        squash: 0.35 + Math.random() * 0.65,
       };
     };
 
-    const resize = () => {
+    const draw = () => {
       const dpr = window.devicePixelRatio || 1;
-      width = canvas.clientWidth;
-      height = canvas.clientHeight;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      // Roughly one piece per 60px of banner width keeps density consistent
+
+      // Roughly one piece per 12px of banner width keeps density consistent
       // across screen sizes.
       const count = Math.max(40, Math.round(width / 12));
-      pieces = Array.from({ length: count }, () => makePiece(false));
-    };
+      if (pieces.length !== count) {
+        pieces = Array.from({ length: count }, makePiece);
+      }
 
-    const draw = () => {
       ctx.clearRect(0, 0, width, height);
+      ctx.globalAlpha = 0.9;
       for (const p of pieces) {
         ctx.save();
-        ctx.translate(p.x, p.y);
+        ctx.translate(p.x * width, p.y * height);
         ctx.rotate(p.angle);
-        // Squash the width with the wobble to fake a flat piece of paper
-        // tumbling in three dimensions.
-        const squash = Math.abs(Math.cos(p.wobble));
         ctx.fillStyle = p.color;
-        ctx.globalAlpha = 0.9;
-        ctx.fillRect((-p.w * squash) / 2, -p.h / 2, p.w * squash, p.h);
+        ctx.fillRect((-p.w * p.squash) / 2, -p.h / 2, p.w * p.squash, p.h);
         ctx.restore();
       }
     };
 
-    const step = () => {
-      for (let i = 0; i < pieces.length; i++) {
-        const p = pieces[i];
-        p.y += p.vy;
-        p.x += p.vx + Math.sin(p.wobble) * 0.3;
-        p.angle += p.spin;
-        p.wobble += p.wobbleSpeed;
-        if (p.y - p.h > height) {
-          pieces[i] = makePiece(true);
-        } else if (p.x < -p.w) {
-          p.x = width + p.w;
-        } else if (p.x > width + p.w) {
-          p.x = -p.w;
-        }
-      }
-      draw();
-      frame = window.requestAnimationFrame(step);
-    };
-
-    resize();
     draw();
-    if (!reduceMotion) {
-      frame = window.requestAnimationFrame(step);
-    }
 
-    const observer = new ResizeObserver(() => {
-      resize();
-      draw();
-    });
+    const observer = new ResizeObserver(draw);
     observer.observe(canvas);
 
-    return () => {
-      window.cancelAnimationFrame(frame);
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -165,7 +119,7 @@ function Confetti() {
 
 /**
  * Celebration strip pinned to the top of the homepage announcing Francis
- * Halzen's 2026 Nobel Prize, with confetti falling behind the text.
+ * Halzen's 2026 Nobel Prize, with confetti scattered behind the text.
  */
 export default function NobelBanner() {
   return (
@@ -202,9 +156,6 @@ export default function NobelBanner() {
             fontSize: { xs: '0.9rem', sm: '1.05rem' },
             lineHeight: 1.2,
             textAlign: 'center',
-            // A faint halo keeps the text readable when confetti passes behind it.
-            textShadow:
-              '0 0 6px #FFF8E1, 0 0 10px #FFF8E1, 0 0 14px #FFF8E1',
           }}
         >
           Pelican user, Francis Halzen awarded the 2026 Nobel Prize!
