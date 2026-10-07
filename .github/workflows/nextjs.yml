@@ -53,10 +53,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.next/cache
-          # Re-use the compiler cache when only source changes; bust it when deps change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.[jt]s', '**/*.[jt]sx') }}
+          # `.next/cache` holds both the compiler cache and the fetch data
+          # cache, and the data cache is only worth having if it is written
+          # back. actions/cache skips the save step on an exact key hit, so a
+          # key that matches on the 6-hourly cron would throw away every
+          # response the run just refreshed. The run id never repeats, so each
+          # run misses, restores the newest cache through restore-keys, and
+          # saves its own on the way out.
+          #
+          # The source hash that used to be here ran after `pnpm install`, so
+          # `**/*.[jt]s` matched ~90,000 files in node_modules to distinguish
+          # the 59 that are ours. It cost a full tree walk to express something
+          # the lockfile hash already covers, and the compiler validates its own
+          # entries regardless of the key.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+            ${{ runner.os }}-nextjs-
       - name: Cache optimized images
         uses: actions/cache@v4
         with:
