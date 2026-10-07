@@ -1,13 +1,12 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ReleaseBody from "./ReleaseBody";
-import { GitHubReleaseData } from "@/utils/github";
-import { OrganizedReleasesType } from "@/utils/releases";
+import { GitHubRelease, OrganizedReleases } from "@chtc/web-components";
 import { accordionSx, tokens } from "@/components/ui/Section";
 
 interface ReleaseSectionProps {
     mainReleaseName: string;
-    organizedReleases: OrganizedReleasesType;
+    organizedReleases: OrganizedReleases;
     id?: string;
 }
 
@@ -49,7 +48,7 @@ const ReleaseSection = ({ mainReleaseName, organizedReleases, id }: ReleaseSecti
             </Box>
 
             {allReleases.map(
-                (release: GitHubReleaseData) => (
+                (release: GitHubRelease) => (
                     <Accordion
                         key={release.tag_name}
                         disableGutters
@@ -84,7 +83,7 @@ const ReleaseSection = ({ mainReleaseName, organizedReleases, id }: ReleaseSecti
  * @param body The body of the release notes.
  * @returns An object where keys are section titles and values are the content of those sections.
  */
-function parseIntoSections(releases: GitHubReleaseData[]): Record<string, string[]> {
+function parseIntoSections(releases: GitHubRelease[]): Record<string, string[]> {
     const result: Record<string, string[]> = {};
 
     for (const release of releases) {

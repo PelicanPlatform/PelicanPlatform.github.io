@@ -1,4 +1,8 @@
-import { GithubMilestoneData, GITHUB_REVALIDATE } from '@/utils/github';
+import {
+  GitHubMilestone,
+  findCurrentMilestone,
+  getMilestones,
+} from '@chtc/web-components';
 import {
   Box,
   Container,
@@ -123,45 +127,23 @@ export default async function Page() {
   );
 }
 
-async function getCurrentMilestone(): Promise<GithubMilestoneData> {
-  const apiUrl =
-    'https://api.github.com/repos/PelicanPlatform/pelican/milestones?direction=asc';
-  const response = await fetch(apiUrl, {
-    next: { revalidate: GITHUB_REVALIDATE },
-  });
-  if (!response.ok) throw new Error('Failed to fetch milestones');
+/**
+ * The release milestone the team is currently working toward. Milestones come
+ * back soonest-due first, so the first open release milestone is the next one;
+ * if none is open, the most recently closed one is used so the page still
+ * renders. A milestone without a due date can't be turned into a schedule, so
+ * that fails the build rather than printing "Invalid Date".
+ */
+async function getCurrentMilestone(): Promise<
+  GitHubMilestone & { due_on: string }
+> {
+  const milestones = await getMilestones('PelicanPlatform', 'pelican');
+  const milestone = findCurrentMilestone(milestones);
 
-  let milestones: GithubMilestoneData[] = await response.json();
-
-  // Filter out non-release milestones. Our milestones are named like "v7.18", but
-  // some milestones are not actual releases (e.g. "parking-lot", "april-docs-focus").
-  const semverRegex = /^v?\d+\.\d+$/;
-  milestones = milestones.filter(
-    (milestone) =>
-      semverRegex.test(milestone.title)
-  );
-
-  // simple type sanity checks, not exhaustive
-  if (!Array.isArray(milestones)) throw new Error('Invalid milestone data');
-  if (milestones.length === 0) throw new Error('No milestones found');
-  if (!('title' in milestones[0])) throw new Error('Invalid milestone state');
-  if (!('state' in milestones[0])) throw new Error('Invalid milestone state');
-
-  const currentMilestone = milestones.find(
-    (milestone) => milestone.state === 'open'
-  );
-
-  if (!currentMilestone) {
-    // if there is no open milestone, default to the last closed one just to gracefully handle the case
-    console.warn(
-      'No open milestone found, defaulting to the last (closed) one'
-    );
-
-    return (
-      milestones.findLast((milestone) => milestone.state === 'closed') ??
-      milestones[0]
-    );
-  } else {
-    return currentMilestone;
+  if (!milestone) throw new Error('No release milestone found');
+  if (!milestone.due_on) {
+    throw new Error(`Release milestone ${milestone.title} has no due date`);
   }
+
+  return { ...milestone, due_on: milestone.due_on };
 }

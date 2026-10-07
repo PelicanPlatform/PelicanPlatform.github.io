@@ -1,7 +1,7 @@
 import ExportedImage from 'next-image-export-optimizer';
 import { Box, Grid, Typography, Paper } from '@mui/material';
 import React from 'react';
-import { Staff } from '@/utils/staff';
+import { Staff } from '@chtc/web-components';
 
 export function LeaderCard({ name, title, image, institution }: Staff) {
   return (

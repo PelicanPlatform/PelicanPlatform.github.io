@@ -4,11 +4,10 @@ import { tokens } from '@/components/ui/Section';
 import SeverityChip from './SeverityChip';
 import {
   SecurityAdvisory,
-  advisoryCvss,
-  advisoryHref,
-  formatAdvisoryDate,
-  patchedVersions,
-} from '@/utils/security';
+  getAdvisoryCvss,
+  getPatchedVersions,
+} from '@chtc/web-components';
+import { advisoryHref, formatAdvisoryDate } from '@/utils/security';
 
 interface AdvisoryCardProps {
   advisory: SecurityAdvisory;
@@ -17,8 +16,8 @@ interface AdvisoryCardProps {
 }
 
 const AdvisoryCard = ({ advisory, isRecent = false }: AdvisoryCardProps) => {
-  const cvss = advisoryCvss(advisory);
-  const patched = patchedVersions(advisory);
+  const cvss = getAdvisoryCvss(advisory);
+  const patched = getPatchedVersions(advisory);
   const href = advisoryHref(advisory);
 
   return (

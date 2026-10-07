@@ -1,13 +1,12 @@
 import { Box, Container, Grid, Typography, Link, Button } from '@mui/material';
-import { ArticleCard } from '@chtc/web-components';
-import { getArticles, filterArticles } from '@/utils/articles';
+import { ArticleCard, getArticles, filterArticles } from '@chtc/web-components';
 import Releases from '../components/Releases';
 import FederationSuite from '@/components/home/FederationSuite';
 import ComponentDetails from '@/components/home/ComponentDetails';
 import ClientCards from '@/components/home/ClientCards';
 import SupportedBackends from '@/components/home/SupportedBackends';
 import HomeTableOfContents from '@/components/home/HomeTableOfContents';
-import SecurityBanner from '@/components/home/SecurityBanner';
+import NobelBanner from '@/components/home/NobelBanner';
 import { getOsdfFederation } from '@/utils/osdfCaches';
 import { Section, SectionHeading, tokens } from '@/components/ui/Section';
 
@@ -30,8 +29,8 @@ export default async function Home() {
 
   return (
     <Box>
+      <NobelBanner />
       <HomeTableOfContents />
-      <SecurityBanner />
       <Box>
         {Date.now() < Date.parse('2024-08-15') && (
           <Container

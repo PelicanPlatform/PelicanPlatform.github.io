@@ -2,11 +2,13 @@ import { Box, Link, Typography } from '@mui/material';
 import { Metadata } from 'next';
 import { Section, SectionHeading, tokens } from '@/components/ui/Section';
 import {
+  getRecentAdvisories,
+  getSecurityAdvisories,
+} from '@chtc/web-components';
+import {
   SECURITY_CONTACT_EMAIL,
   SECURITY_POLICY_URL,
   advisorySlug,
-  fetchSecurityAdvisories,
-  recentAdvisories,
 } from '@/utils/security';
 import AdvisoryCard from './AdvisoryCard';
 
@@ -17,9 +19,12 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-  const advisories = await fetchSecurityAdvisories();
+  const advisories = await getSecurityAdvisories(
+    'PelicanPlatform',
+    'pelican'
+  );
   const recentIds = new Set(
-    recentAdvisories(advisories).map((advisory) => advisory.ghsa_id)
+    getRecentAdvisories(advisories).map((advisory) => advisory.ghsa_id)
   );
 
   return (

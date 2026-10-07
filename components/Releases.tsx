@@ -1,11 +1,11 @@
 import { Box, Link, Typography } from '@mui/material';
 import ArrowRight from '@/components/svg/arrowright';
-import { fetchAllReleases } from '@/utils/releases';
+import { getReleases } from '@chtc/web-components';
 import semverRCompare from 'semver/functions/rcompare';
 import { tokens } from '@/components/ui/Section';
 
 const Releases = async () => {
-  const releases = await fetchAllReleases();
+  const releases = await getReleases('PelicanPlatform', 'pelican');
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

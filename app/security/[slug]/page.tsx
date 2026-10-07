@@ -7,21 +7,26 @@ import MarkdownContainer from '@/components/MarkdownContainer';
 import { Section, tokens } from '@/components/ui/Section';
 import {
   SecurityAdvisory,
-  advisoryCvss,
-  advisorySlug,
-  fetchSecurityAdvisories,
-  formatAdvisoryDate,
-  patchedVersions,
-} from '@/utils/security';
+  getAdvisoryCvss,
+  getPatchedVersions,
+  getSecurityAdvisories,
+} from '@chtc/web-components';
+import { advisorySlug, formatAdvisoryDate } from '@/utils/security';
 import SeverityChip from '../SeverityChip';
 
 export async function generateStaticParams() {
-  const advisories = await fetchSecurityAdvisories();
+  const advisories = await getSecurityAdvisories(
+    'PelicanPlatform',
+    'pelican'
+  );
   return advisories.map((advisory) => ({ slug: advisorySlug(advisory) }));
 }
 
 async function getAdvisory(slug: string): Promise<SecurityAdvisory | undefined> {
-  const advisories = await fetchSecurityAdvisories();
+  const advisories = await getSecurityAdvisories(
+    'PelicanPlatform',
+    'pelican'
+  );
   return advisories.find((advisory) => advisorySlug(advisory) === slug);
 }
 
@@ -81,8 +86,8 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
     notFound();
   }
 
-  const cvss = advisoryCvss(advisory);
-  const patched = patchedVersions(advisory);
+  const cvss = getAdvisoryCvss(advisory);
+  const patched = getPatchedVersions(advisory);
   const vulnerabilities = advisory.vulnerabilities ?? [];
   const credits = advisory.credits ?? [];
   const cwes = advisory.cwes ?? [];

@@ -1,9 +1,12 @@
 import { PresentationGrid } from '@/components/PresentationGrid';
-import { getPresentations } from '@/utils/presentations';
+import { getPresentations, filterPresentations } from '@chtc/web-components';
 import { Box, Container, Typography } from '@mui/material';
 
 export default async function Page() {
-  const presentations = await getPresentations('CHTC', 'Presentations', 'main');
+  const presentations = filterPresentations(
+    await getPresentations('CHTC', 'Presentations', 'main'),
+    'pelican'
+  );
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { organizeReleases } from '@/utils/releases';
+import { getReleases, organizeReleases } from '@chtc/web-components';
 import ReleaseSection from './ReleaseSection';
 import ReleaseNav from './ReleaseNav';
 import { Section, SectionHeading } from '@/components/ui/Section';
@@ -8,7 +8,9 @@ const idFor = (name: string) => `release-${name}`;
 const labelFor = (name: string) => name[0].toUpperCase() + name.slice(1);
 
 const Page = async () => {
-  const organizedReleases = await organizeReleases();
+  const organizedReleases = organizeReleases(
+    await getReleases('PelicanPlatform', 'pelican')
+  );
   const versions = Object.keys(organizedReleases);
   const navItems = versions.map((name) => ({
     id: idFor(name),

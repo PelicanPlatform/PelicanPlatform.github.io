@@ -9,33 +9,36 @@ import {
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import ReleaseBody from '../ReleaseBody';
-import { GitHubReleaseData } from '../../../utils/github';
-import { fetchAllReleases } from '@/utils/releases';
+import { GitHubRelease, getReleases } from '@chtc/web-components';
 import { Section, accordionSx, tokens } from '@/components/ui/Section';
 
 interface ReleaseData {
-  specificRelease?: GitHubReleaseData;
-  patchReleases: GitHubReleaseData[];
+  specificRelease?: GitHubRelease;
+  patchReleases: GitHubRelease[];
 }
 
 export async function generateStaticParams() {
-  const releases = await fetchAllReleases(false);
-  const slugs = releases.map((release: GitHubReleaseData) => release.tag_name);
+  const releases = await getReleases('PelicanPlatform', 'pelican', {
+    includePrereleases: true,
+  });
+  const slugs = releases.map((release: GitHubRelease) => release.tag_name);
   return slugs.map((slug: string) => ({ slug: [slug] }));
 }
 
 async function getPageData(slug: string[]): Promise<ReleaseData> {
-  const releasesData = await fetchAllReleases(false);
+  const releasesData = await getReleases('PelicanPlatform', 'pelican', {
+    includePrereleases: true,
+  });
 
   const fullSlug = slug.join('.');
   const [majorVersion, minorVersionBase] = fullSlug.split('.');
   const minorVersion = parseInt(minorVersionBase, 10);
   const newVersionPrefix = `${majorVersion}.${minorVersion}`;
   const specificRelease = releasesData.find(
-    (release: GitHubReleaseData) => release.tag_name === fullSlug
+    (release: GitHubRelease) => release.tag_name === fullSlug
   );
   const patchReleases = releasesData.filter(
-    (release: GitHubReleaseData) =>
+    (release: GitHubRelease) =>
       release.tag_name.startsWith(newVersionPrefix) &&
       !release.tag_name.endsWith('0')
   );
@@ -113,7 +116,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string[] }> }) => {
 
       {patchReleases.length > 0 && (
         <Box sx={{ mt: 4 }}>
-          {patchReleases.map((release: GitHubReleaseData) => (
+          {patchReleases.map((release: GitHubRelease) => (
             <Accordion
               key={release.tag_name}
               disableGutters

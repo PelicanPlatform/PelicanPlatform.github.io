@@ -1,7 +1,6 @@
 'use client';
 
-import { BackendPresentation } from '@/utils/presentations';
-import { PresentationCard } from '@chtc/web-components';
+import { BackendPresentation, PresentationCard } from '@chtc/web-components';
 import {
   Box,
   Button,

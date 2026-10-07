@@ -1,6 +1,10 @@
 import { Box, Typography, Grid, Container } from '@mui/material';
-import { HorizontalArticleCard, ArticleCard } from '@chtc/web-components';
-import { getArticles, filterArticles } from '../../utils/articles';
+import {
+  HorizontalArticleCard,
+  ArticleCard,
+  getArticles,
+  filterArticles,
+} from '@chtc/web-components';
 
 async function getUserStories() {
   const articles = await getArticles('CHTC', 'Articles', 'main');

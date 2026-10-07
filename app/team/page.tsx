@@ -1,7 +1,7 @@
 import { Box, Container, Grid, Typography, Divider } from '@mui/material';
 import { LeaderCard, StaffCard } from './cards';
 import React from 'react';
-import { getStaff } from '../../utils/staff';
+import { getStaff } from '@chtc/web-components';
 
 export default async function Page() {
   const team = await getStaff('pelican');

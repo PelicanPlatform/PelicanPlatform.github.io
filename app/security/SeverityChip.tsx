@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { AdvisorySeverity } from '@/utils/security';
+import { AdvisorySeverity } from '@chtc/web-components';
 
 /**
  * Severity is the first thing an administrator reads, so each level gets a
