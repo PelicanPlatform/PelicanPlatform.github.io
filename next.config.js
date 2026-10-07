@@ -23,6 +23,7 @@ const nextConfig = {
     nextImageExportOptimizer_quality: '75',
     nextImageExportOptimizer_storePicturesInWEBP: 'true',
     nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
+    nextImageExportOptimizer_remoteImageCacheTTL: '864000',  // 10 days
 
     // If you do not want to use blurry placeholder images, then you can set
     // nextImageExportOptimizer_generateAndUseBlurImages to false and pass

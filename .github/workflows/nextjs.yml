@@ -73,15 +73,18 @@ jobs:
       - name: Cache optimized images
         uses: actions/cache@v4
         with:
-          # The optimizer skips images whose generated files already exist, so
-          # the key has to cover more than the source images:
-          #   - next.config.js sets the widths to generate, so a restored cache
-          #     would otherwise keep serving variants at the old widths.
-          #   - remoteOptimizedImages.js decides which remote headshots are
-          #     fetched at all.
-          # `remoteImagesForOptimization` is the download cache for those
-          # headshots; without it every build re-downloads all 33.
+          # Three separate things have to come back for a build to reuse work:
+          #
+          #   - the hashes file is what actually decides reuse. The optimizer
+          #     skips an image only when its stored hash still matches; having
+          #     the output file on disk is not enough. Restoring the variants
+          #     without it re-encodes all of them (measured: 0.1s with it,
+          #     20s without).
+          #   - the generated variants themselves.
+          #   - the remote headshot downloads, which the TTL in next.config.js
+          #     keeps valid for 10 days.
           path: |
+            public/static/images/next-image-export-optimizer-hashes.json
             public/**/nextImageExportOptimizer
             remoteImagesForOptimization
           key: ${{ runner.os }}-nextimages-${{ hashFiles('public/static/images/**', 'next.config.js', 'remoteOptimizedImages.js') }}
