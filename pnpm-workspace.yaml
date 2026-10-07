@@ -3,3 +3,4 @@ allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@chtc/web-components@2.0.3'
+  - '@chtc/web-components@2.0.4'
