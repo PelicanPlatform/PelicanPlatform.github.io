@@ -1,6 +1,5 @@
 allowBuilds:
-  sharp: true
-  unrs-resolver: true
+  sharp: false
+  unrs-resolver: false
 minimumReleaseAgeExclude:
-  - '@chtc/web-components@2.0.3'
-  - '@chtc/web-components@2.0.4'
+  - '@chtc/web-components'
