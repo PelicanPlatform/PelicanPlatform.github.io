@@ -8,7 +8,7 @@ import { tokens } from '@/components/ui/Section';
 
 /** Where the "Read More" button sends visitors. */
 const READ_MORE_HREF =
-  '/news/2026/10/06/francis-halzen-nobel-prize';
+  'https://chtc.cs.wisc.edu/behind-nobel-winning-icecube-discoveries.html';
 
 const BANNER_HEIGHT = 60;
 
