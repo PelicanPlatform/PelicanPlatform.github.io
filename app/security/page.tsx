@@ -6,6 +6,7 @@ import {
   getSecurityAdvisories,
 } from '@chtc/web-components';
 import {
+  DEVELOPMENT_CONTROLS_URL,
   SECURITY_CONTACT_EMAIL,
   SECURITY_POLICY_URL,
   advisorySlug,
@@ -67,7 +68,17 @@ const Page = async () => {
           >
             security policy
           </Link>{' '}
-          for what to include in a report.
+          for what to include in a report. How reports are handled, and how
+          Pelican is developed securely, is described in CHTC&rsquo;s{' '}
+          <Link
+            href={DEVELOPMENT_CONTROLS_URL}
+            target='_blank'
+            rel='noopener'
+            underline='hover'
+          >
+            Software Development Controls for Cybersecurity
+          </Link>
+          .
         </Typography>
       </Box>
 

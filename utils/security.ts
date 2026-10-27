@@ -10,6 +10,9 @@ import { formatLongDate, type SecurityAdvisory } from '@chtc/web-components';
 export const SECURITY_CONTACT_EMAIL = 'security@pelicanplatform.org';
 export const SECURITY_POLICY_URL =
   'https://github.com/PelicanPlatform/pelican/security/policy';
+/** CHTC's development controls: how Pelican is built securely and how reports are handled. */
+export const DEVELOPMENT_CONTROLS_URL =
+  'https://chtc.cs.wisc.edu/technologies/dev-control/';
 
 /** URL slug for an advisory — the GHSA id is already unique and stable. */
 export function advisorySlug(advisory: SecurityAdvisory): string {
