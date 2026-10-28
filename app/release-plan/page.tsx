@@ -15,6 +15,13 @@ import {
   TableBody,
   Link,
 } from '@mui/material';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'Release Plan',
+  'The schedule for the next Pelican feature release: pre-release and release dates for the current milestone.',
+  '/release-plan'
+);
 
 export default async function Page() {
   const milestone = await getCurrentMilestone();

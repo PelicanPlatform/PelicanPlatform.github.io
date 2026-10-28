@@ -11,6 +11,8 @@ import {
   getPatchedVersions,
   getSecurityAdvisories,
 } from '@chtc/web-components';
+import { firstParagraph } from '@chtc/web-components/content';
+import { listingMetadata } from '@/utils/metadata';
 import { advisorySlug, formatAdvisoryDate } from '@/utils/security';
 import SeverityChip from '../SeverityChip';
 
@@ -35,16 +37,22 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const advisory = await getAdvisory((await params).slug);
+  const slug = (await params).slug;
+  const advisory = await getAdvisory(slug);
 
   if (!advisory) {
-    return { title: 'Security Advisory | Pelican Platform' };
+    return { title: 'Security Advisory Not Found' };
   }
 
-  return {
-    title: `${advisory.summary} | Pelican Security Advisory`,
-    description: `${advisory.severity ? `${advisory.severity} severity — ` : ''}${advisory.ghsa_id}${advisory.cve_id ? ` (${advisory.cve_id})` : ''}`,
-  };
+  const identifiers = `${advisory.severity ? `${advisory.severity} severity — ` : ''}${advisory.ghsa_id}${advisory.cve_id ? ` (${advisory.cve_id})` : ''}`;
+  // Advisory bodies open with a `### Impact` heading, which a plain summary
+  // would keep; the first prose paragraph skips it.
+  const summary = firstParagraph(advisory.description);
+  return listingMetadata(
+    `${advisory.summary} — Security Advisory`,
+    summary ? `${identifiers}. ${summary}` : identifiers,
+    `/security/${slug}`
+  );
 }
 
 /** One label/value row in the advisory's metadata panel. */

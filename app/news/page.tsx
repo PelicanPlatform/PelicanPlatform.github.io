@@ -5,6 +5,13 @@ import {
   getArticles,
   filterArticles,
 } from '@chtc/web-components';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'News',
+  'News and announcements from the Pelican Platform project.',
+  '/news'
+);
 
 async function getUserStories() {
   const articles = await getArticles('CHTC', 'Articles', 'main');

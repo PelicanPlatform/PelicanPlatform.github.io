@@ -1,5 +1,4 @@
 import { Box, Link, Typography } from '@mui/material';
-import { Metadata } from 'next';
 import { Section, SectionHeading, tokens } from '@/components/ui/Section';
 import {
   getRecentAdvisories,
@@ -12,12 +11,13 @@ import {
   advisorySlug,
 } from '@/utils/security';
 import AdvisoryCard from './AdvisoryCard';
+import { listingMetadata } from '@/utils/metadata';
 
-export const metadata: Metadata = {
-  title: 'Security Advisories | Pelican Platform',
-  description:
-    'Published security advisories for the Pelican Platform, including affected versions, patched releases, and mitigation guidance.',
-};
+export const metadata = listingMetadata(
+  'Security Advisories',
+  'Published security advisories for the Pelican Platform, including affected versions, patched releases, and mitigation guidance.',
+  '/security'
+);
 
 const Page = async () => {
   const advisories = await getSecurityAdvisories(

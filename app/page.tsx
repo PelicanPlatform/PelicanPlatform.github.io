@@ -9,6 +9,23 @@ import HomeTableOfContents from '@/components/home/HomeTableOfContents';
 import NobelBanner from '@/components/home/NobelBanner';
 import { getOsdfFederation } from '@/utils/osdfCaches';
 import { Section, SectionHeading, tokens } from '@/components/ui/Section';
+import type { Metadata } from 'next';
+import { listingMetadata } from '@/utils/metadata';
+import { siteConfig } from '@/site.config';
+
+const DESCRIPTION =
+  'Pelican is open-source software for federating data repositories and delivering their objects to computing capacity such as the OSPool, powering the Open Science Data Federation.';
+
+// The home page is the site itself, so its title is the bare site name rather
+// than "Home — Pelican Platform". Every title field is restated so the
+// openGraph and twitter blocks stay complete.
+const base = listingMetadata('Home', DESCRIPTION, '/');
+export const metadata: Metadata = {
+  ...base,
+  title: { absolute: siteConfig.name },
+  openGraph: { ...base.openGraph, title: siteConfig.name },
+  twitter: { ...base.twitter, title: siteConfig.name },
+};
 
 async function getUserStories() {
   const articles = await getArticles('CHTC', 'Articles', 'main');
