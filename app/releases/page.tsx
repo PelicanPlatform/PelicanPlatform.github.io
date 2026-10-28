@@ -3,6 +3,13 @@ import { getReleases, organizeReleases } from '@chtc/web-components';
 import ReleaseSection from './ReleaseSection';
 import ReleaseNav from './ReleaseNav';
 import { Section, SectionHeading } from '@/components/ui/Section';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'Releases',
+  'Every Pelican release, with release notes and download links, grouped by feature series.',
+  '/releases'
+);
 
 const idFor = (name: string) => `release-${name}`;
 const labelFor = (name: string) => name[0].toUpperCase() + name.slice(1);

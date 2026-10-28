@@ -1,6 +1,13 @@
 import { PresentationGrid } from '@/components/PresentationGrid';
 import { getPresentations, filterPresentations } from '@chtc/web-components';
 import { Box, Container, Typography } from '@mui/material';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'Presentations',
+  'Talks, slides and recordings about Pelican from conferences, workshops and training events.',
+  '/presentations'
+);
 
 export default async function Page() {
   const presentations = filterPresentations(

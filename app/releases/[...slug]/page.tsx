@@ -11,6 +11,7 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import ReleaseBody from '../ReleaseBody';
 import { GitHubRelease, getReleases } from '@chtc/web-components';
 import { Section, accordionSx, tokens } from '@/components/ui/Section';
+import { listingMetadata } from '@/utils/metadata';
 
 interface ReleaseData {
   specificRelease?: GitHubRelease;
@@ -43,6 +44,20 @@ async function getPageData(slug: string[]): Promise<ReleaseData> {
       !release.tag_name.endsWith('0')
   );
   return { specificRelease, patchReleases };
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>;
+}) {
+  const slug = (await params).slug;
+  const version = slug.join('.');
+  return listingMetadata(
+    `Pelican ${version}`,
+    `Release notes and download links for Pelican ${version}.`,
+    `/releases/${slug.join('/')}`
+  );
 }
 
 function getDownloadLink(releaseData: ReleaseData) {

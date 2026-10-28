@@ -1,5 +1,12 @@
 import { Link, Typography } from '@mui/material';
 import { Section, SectionHeading, tokens } from '@/components/ui/Section';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'Contact',
+  'How to get help using Pelican, reach the Pelican team, or report a security issue.',
+  '/contact'
+);
 
 export default function Page() {
   const paragraph = {

@@ -1,6 +1,13 @@
 import { Box, Link, List, ListItem, ListItemText, Typography } from '@mui/material';
 import ExportedImage from 'next-image-export-optimizer';
 import { Section, SectionHeading, cardSx, tokens } from '@/components/ui/Section';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'About',
+  'What the Pelican Platform is: an open-source platform for federating dataset repositories and delivering their objects to computing capacity, and the Open Science Data Federation it powers.',
+  '/about'
+);
 
 const paragraph = {
   fontSize: '1.1rem',

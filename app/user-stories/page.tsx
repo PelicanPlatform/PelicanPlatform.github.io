@@ -5,6 +5,13 @@ import {
   getArticles,
   filterArticles,
 } from '@chtc/web-components';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'User Stories',
+  'How researchers and institutions use Pelican and the Open Science Data Federation to move and share their data.',
+  '/user-stories'
+);
 
 async function getUserStories() {
   const articles = await getArticles('CHTC', 'Articles', 'main');

@@ -3,6 +3,13 @@ import { LeaderCard, StaffCard } from './cards';
 import React from 'react';
 import { getStaff } from '@chtc/web-components';
 import { recordStaffImages } from '@/utils/staffImages';
+import { listingMetadata } from '@/utils/metadata';
+
+export const metadata = listingMetadata(
+  'Team',
+  'The people who build and support the Pelican Platform.',
+  '/team'
+);
 
 export default async function Page() {
   const team = await getStaff('pelican');
